@@ -619,7 +619,8 @@ sections.forEach(s => observer.observe(s));
 //  CfI USER GROWTH CHARTS
 // ══════════════════════════════
 var cfiCharts = {};
-var cfiSkuData = [
+function fmtKM(v) { v = Math.abs(Math.round(v)); return v >= 1000 ? (v/1000).toFixed(1)+'M' : v+'K'; }
+var cfiSkuData= [
   { key:'total', color:PURPLE, act:[85,90,95,92,98,100,105,110,108,115,118,122], res:[12,14,13,15,16,14,18,17,19,20,18,22], churn:[35,38,36,40,42,39,44,42,46,48,45,50] },
   { key:'pro', color:BLUE, act:[30,32,34,33,36,38,40,42,41,44,46,48], res:[4,5,4,5,5,5,6,6,6,7,6,7], churn:[12,13,12,14,14,13,15,14,15,16,15,17] },
   { key:'proplus', color:PURPLE, act:[18,20,22,20,22,22,24,24,23,25,26,26], res:[3,3,3,4,4,3,4,4,5,5,4,5], churn:[8,9,8,10,10,9,10,10,11,11,10,12] },
@@ -677,10 +678,10 @@ cfiSkuData.forEach(function(sku) {
       { label:'Trials', data:actTrials.slice(), borderColor:BLUE, backgroundColor:a(BLUE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
       { label:'Upsell', data:actUpsell.slice(), borderColor:PURPLE, backgroundColor:a(PURPLE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:true, font:{size:8,weight:'bold'}, color:function(ctx){return ctx.dataset.borderColor;}, formatter:function(v){return Math.round(v)+'K';}, anchor:'end', align:'top'}},
       scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Activations (K)',font:{size:9}}}}, aspectRatio:1.7 }
   });
-  // Resurrections — stacked area by churn duration
+  // Resurrections— stacked area by churn duration
   cfiCharts['res-'+sku.key] = new Chart(document.getElementById('cfi-res-'+sku.key), {
     type:'line',
     data:{ labels:MONTHS, datasets:[
@@ -688,10 +689,10 @@ cfiSkuData.forEach(function(sku) {
       { label:'3-12 mo churn', data:res312.slice(), borderColor:BLUE, backgroundColor:a(BLUE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
       { label:'12+ mo churn', data:res12p.slice(), borderColor:ORANGE, backgroundColor:a(ORANGE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:true, font:{size:8,weight:'bold'}, color:function(ctx){return ctx.dataset.borderColor;}, formatter:function(v){return Math.round(v)+'K';}, anchor:'end', align:'top'}},
       scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Resurrections (K)',font:{size:9}}}}, aspectRatio:1.7 }
   });
-  // MAU by SKU (total) or MAU Composition (per-SKU)
+  // MAU by SKU(total) or MAU Composition (per-SKU)
   if (sku.key === 'total') {
     cfiCharts['mausku-total'] = new Chart(document.getElementById('cfi-mausku-total'), {
       type:'bar',
@@ -701,8 +702,8 @@ cfiSkuData.forEach(function(sku) {
         { label:'Max', data:[420,436,453,470,488,505,523,546,565,585,607,631], backgroundColor:a(TEAL,.7), borderRadius:2, stack:'s' },
         { label:'Ultra', data:[220,232,244,256,267,279,291,303,316,329,341,354], backgroundColor:a(ORANGE,.7), borderRadius:2, stack:'s' }
       ]},
-      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
-        stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
+      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}, datalabels: stackedDatalabels(function(v){return fmtKM(v)}, 0.06),
+        stackedTotal:{display:true, formatter:function(v){return fmtKM(v)}}},
         scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'MAU (K)',font:{size:9}}}}, aspectRatio:1.7 }
     });
   } else {
@@ -718,8 +719,8 @@ cfiSkuData.forEach(function(sku) {
         { label:'Activated', data:mauActivated.slice(), backgroundColor:a(GREEN,.7), borderRadius:2, stack:'s' },
         { label:'Resurrected', data:mauResurrected.slice(), backgroundColor:a(BLUE,.7), borderRadius:2, stack:'s' }
       ]},
-      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
-        stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
+      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}, datalabels: stackedDatalabels(function(v){return fmtKM(v)}, 0.06),
+        stackedTotal:{display:true, formatter:function(v){return fmtKM(v)}}},
         scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'MAU (K)',font:{size:9}}}}, aspectRatio:1.7 }
     });
   }
@@ -775,12 +776,12 @@ cfiSkuData.forEach(function(sku) {
       { label:'Overage', data:r2.ovg.slice(), backgroundColor:a(BLUE,.5), borderRadius:2, stack:'s' },
       { type:'line', label:'Target', data:r2.arrTarget.slice(), borderColor:ORANGE, borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, tension:.3 }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
-      stackedTotal:{display:true, formatter:function(v){return '$'+Math.round(v)+'M'}}},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels: stackedDatalabels(function(v){return '$'+Math.round(Math.abs(v))+'M'}, 0.06),
+      stackedTotal:{display:true, formatter:function(v){return '$'+Math.round(v)+'M'}, font:{size:10,weight:'bold'}}},
       scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:9}},title:{display:true,text:'ARR ($M)',font:{size:9}}}}, aspectRatio:1.7 }
   });
 
-  // Gross Profit by Usage Percentile — stacked bar + overall GM% line + GP total line
+  // Gross Profitby Usage Percentile — stacked bar + overall GM% line + GP total line
   var gpTotalLine = gm.p50.map(function(v,i){ return Math.round((v + gm.p75[i] + gm.p90[i] + gm.p99[i] + gm.p99p[i])*10)/10; });
   cfiCharts['gm-'+k] = new Chart(document.getElementById('cfi-gm-'+k), {
     type:'bar',
@@ -793,7 +794,7 @@ cfiSkuData.forEach(function(sku) {
       { type:'line', label:'Overall GM %', data:sku._gmOverall.slice(), borderColor:'#E6EDF3', borderWidth:2.5, pointRadius:2, tension:.3, fill:false, yAxisID:'y1', pointBackgroundColor:'#E6EDF3', order:0 },
       { type:'line', label:'Total GP ($M)', data:gpTotalLine, borderColor:PURPLE, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y', borderDash:[4,3], order:0 }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels: stackedDatalabels(function(v){return '$'+Math.round(Math.abs(v))+'M'}, 0.06),
       annotation:{annotations:{
         zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.2)',borderWidth:1},
         target:{type:'line',yMin:-30,yMax:-30,borderColor:GREEN,borderWidth:1.5,borderDash:[6,4],yScaleID:'y1',
@@ -811,12 +812,12 @@ cfiSkuData.forEach(function(sku) {
   cfiCharts['sticky-'+k] = new Chart(document.getElementById('cfi-sticky-'+k), {
     type:'bar',
     data:{ labels:MONTHS, datasets:[
-      { label:'WAU', data:wauAbs, backgroundColor:a(sku.color,.7), borderRadius:2, stack:'s', yAxisID:'y' },
-      { label:'MAU-only', data:mauOnly, backgroundColor:a('#8B949E',.3), borderRadius:2, stack:'s', yAxisID:'y' },
+      { label:'WAU', data:wauAbs, backgroundColor:a(sku.color,.7), borderRadius:2, stack:'s', yAxisID:'y', datalabels:{display:function(){return !window._hideInternalLabels;}, font:{size:8,weight:'bold'}, color:'#fff', formatter:function(v){return fmtKM(v);}, anchor:'center', align:'center'} },
+      { label:'MAU-only', data:mauOnly, backgroundColor:a('#8B949E',.3), borderRadius:2, stack:'s', yAxisID:'y', datalabels:{display:function(){return !window._hideInternalLabels;}, font:{size:7,weight:'bold'}, color:'#fff', formatter:function(v){return fmtKM(v);}, anchor:'center', align:'center'} },
       { type:'line', label:'WAU/MAU %', data:st.wauMau.slice(), borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y1' }
     ]},
     options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
-      stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
+      stackedTotal:{display:true, formatter:function(v){return fmtKM(v)}}},
       scales:{x:{stacked:true,grid:{display:false}},
         y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Users (K)',font:{size:9}}},
         y1:{position:'right',min:0,max:100,grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'Ratio %',font:{size:9}}}}, aspectRatio:1.7 }
@@ -831,7 +832,7 @@ cfiSkuData.forEach(function(sku) {
       { label:'M6', data:rm.m6.slice(), borderColor:TEAL, borderWidth:1.5, tension:.3, fill:false, pointRadius:1 },
       { label:'M12', data:rm.m12.slice(), borderColor:ORANGE, borderWidth:1.5, tension:.3, fill:false, pointRadius:1, borderDash:[4,3] }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:true, font:{size:8,weight:'bold'}, color:function(ctx){return ctx.dataset.borderColor;}, formatter:function(v){return v+'%';}, anchor:'end', align:'top'}},
       scales:{x:{grid:{display:false}}, y:{min:30,max:90,ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'% Retained',font:{size:9}}}}, aspectRatio:1.7 }
   });
 });
@@ -993,7 +994,7 @@ window.switchCfiAct = function(mode) {
   }
   cfiCharts['act-total'] = new Chart(document.getElementById('cfi-act-total'), {
     type:'line', data:{ labels:MONTHS, datasets:datasets },
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:true, font:{size:8,weight:'bold'}, color:function(ctx){return ctx.dataset.borderColor;}, formatter:function(v){return Math.round(v)+'K';}, anchor:'end', align:'top'}},
       scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Activations (K)',font:{size:9}}}}, aspectRatio:1.7 }
   });
   document.getElementById('cfi-act-total').closest('.card').querySelectorAll('.act-toggle').forEach(function(b) {
@@ -1019,7 +1020,7 @@ window.switchCfiRes = function(mode) {
   }
   cfiCharts['res-total'] = new Chart(document.getElementById('cfi-res-total'), {
     type:'line', data:{ labels:MONTHS, datasets:datasets },
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:true, font:{size:8,weight:'bold'}, color:function(ctx){return ctx.dataset.borderColor;}, formatter:function(v){return Math.round(v)+'K';}, anchor:'end', align:'top'}},
       scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Resurrections (K)',font:{size:9}}}}, aspectRatio:1.7 }
   });
   document.getElementById('cfi-res-total').closest('.card').querySelectorAll('.act-toggle').forEach(function(b) {
@@ -1047,7 +1048,7 @@ window.switchCfiArr = function(mode) {
   }
   cfiCharts['arr-total'] = new Chart(document.getElementById('cfi-arr-total'), {
     type:'bar', data:{ labels:MONTHS, datasets:datasets },
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}, stackedTotal:{display:true, formatter:function(v){return '$'+Math.round(v)+'M'}}},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels: stackedDatalabels(function(v){return '$'+Math.round(Math.abs(v))+'M'}, 0.06), stackedTotal:{display:true, formatter:function(v){return '$'+Math.round(v)+'M'}, font:{size:10,weight:'bold'}}},
       scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:9}},title:{display:true,text:'ARR ($M)',font:{size:9}}}}, aspectRatio:1.7 }
   });
   document.getElementById('cfi-arr-total').closest('.card').querySelectorAll('.act-toggle').forEach(function(b) {
@@ -1089,7 +1090,7 @@ window.switchCfiGp = function(mode) {
 
   cfiCharts['gm-total'] = new Chart(document.getElementById('cfi-gm-total'), {
     type:'bar', data:{ labels:MONTHS, datasets:datasets },
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels: stackedDatalabels(function(v){return '$'+Math.round(Math.abs(v))+'M'}, 0.06),
       annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.2)',borderWidth:1},target:{type:'line',yMin:-30,yMax:-30,borderColor:GREEN,borderWidth:1.5,borderDash:[6,4],yScaleID:'y1',label:{display:true,content:'-30% target',position:'end',backgroundColor:'transparent',color:GREEN,font:{size:9}}}}}},
       scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:9}},title:{display:true,text:'Gross Profit ($M)',font:{size:9}}},y1:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'Overall GM %',font:{size:9}}}}, aspectRatio:1.7 }
   });
