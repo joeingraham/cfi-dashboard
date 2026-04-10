@@ -275,7 +275,7 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
   <div class="section-header" style="border-left-color:#7B68EE"><h2>Total</h2><p>All plans combined — MAU trends, activations, resurrections, and retention</p></div>
   <div class="grid grid-4">
     <div class="card"><div class="card-title">MAU by SKU <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mausku-total"></canvas></div></div>
-    <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-total"></canvas></div></div>
+    <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span><span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchCfiMauGrowth('type')">by Type</button><button class="act-toggle" onclick="switchCfiMauGrowth('sku')">by SKU</button></span></div><div class="chart-wrap"><canvas id="cfi-mau-total"></canvas></div></div>
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span><span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchCfiAct('type')">by Type</button><button class="act-toggle" onclick="switchCfiAct('sku')">by SKU</button></span></div><div class="chart-wrap"><canvas id="cfi-act-total"></canvas></div></div>
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span><span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchCfiRes('duration')">by Duration</button><button class="act-toggle" onclick="switchCfiRes('sku')">by SKU</button></span></div><div class="chart-wrap"><canvas id="cfi-res-total"></canvas></div></div>
   </div>
@@ -391,10 +391,10 @@ const PURPLE = '#7B68EE', BLUE = '#49CCF9', TEAL = '#79D9B9', PINK = '#FD71AF', 
 Chart.defaults.color = '#8B949E';
 Chart.defaults.borderColor = 'rgba(33,38,45,.6)';
 Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
-Chart.defaults.font.size = 9;
-Chart.defaults.plugins.legend.labels.boxWidth = 8;
-Chart.defaults.plugins.legend.labels.padding = 6;
-Chart.defaults.plugins.legend.labels.font = { size: 8 };
+Chart.defaults.font.size = 10;
+Chart.defaults.plugins.legend.labels.boxWidth = 10;
+Chart.defaults.plugins.legend.labels.padding = 8;
+Chart.defaults.plugins.legend.labels.font = { size: 9 };
 Chart.defaults.elements.point.radius = 1.5;
 Chart.defaults.elements.point.hoverRadius = 4;
 Chart.defaults.animation.duration = 800;
@@ -660,15 +660,13 @@ cfiSkuData.forEach(function(sku) {
       { label:'Activations', data:sku.act.slice(), backgroundColor:a(GREEN,.7), borderRadius:2, stack:'g', order:1 },
       { label:'Resurrections', data:sku.res.slice(), backgroundColor:a(BLUE,.6), borderRadius:2, stack:'g', order:1 },
       { label:'Churn', data:sku.churn.map(function(v){return -v}), backgroundColor:a(RED,.6), borderRadius:2, stack:'g', order:1 },
-      { type:'line', label:'Net Growth', data:net.slice(), borderColor:sku.color, borderWidth:1.5, pointRadius:1, tension:.3, fill:false, yAxisID:'y', order:0 },
-      { type:'line', label:'Total MAU', data:cumMau.slice(), borderColor:'#E6EDF3', borderWidth:3, pointRadius:3, tension:.3, fill:false, yAxisID:'y1',
-        pointBackgroundColor:'#E6EDF3', order:0 }
+      { type:'line', label:'Net Growth', data:net.slice(), borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false, order:0 }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
-      stackedTotal:{display:true, formatter:function(v){return v+'K'}}},
-      scales:{x:{grid:{display:false}},
-        y:{ticks:{callback:function(v){return v+'K'},font:{size:7}}},
-        y1:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Total MAU (K)',font:{size:7}}}
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}},
+      datalabels: stackedDatalabels(function(v){return Math.abs(Math.round(v))+'K'}, 0.08),
+      stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:8}}},
+        y:{ticks:{callback:function(v){return v+'K'},font:{size:8}}}
       }, aspectRatio:1.7 }
   });
   // Activations — stacked area (Direct / Trials / Upsell)
@@ -679,8 +677,8 @@ cfiSkuData.forEach(function(sku) {
       { label:'Trials', data:actTrials.slice(), borderColor:BLUE, backgroundColor:a(BLUE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
       { label:'Upsell', data:actUpsell.slice(), borderColor:PURPLE, backgroundColor:a(PURPLE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
-      scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Activations (K)',font:{size:7}}}}, aspectRatio:1.7 }
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Activations (K)',font:{size:9}}}}, aspectRatio:1.7 }
   });
   // Resurrections — stacked area by churn duration
   cfiCharts['res-'+sku.key] = new Chart(document.getElementById('cfi-res-'+sku.key), {
@@ -690,8 +688,8 @@ cfiSkuData.forEach(function(sku) {
       { label:'3-12 mo churn', data:res312.slice(), borderColor:BLUE, backgroundColor:a(BLUE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
       { label:'12+ mo churn', data:res12p.slice(), borderColor:ORANGE, backgroundColor:a(ORANGE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
-      scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Resurrections (K)',font:{size:7}}}}, aspectRatio:1.7 }
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Resurrections (K)',font:{size:9}}}}, aspectRatio:1.7 }
   });
   // MAU by SKU (total) or MAU Composition (per-SKU)
   if (sku.key === 'total') {
@@ -703,9 +701,9 @@ cfiSkuData.forEach(function(sku) {
         { label:'Max', data:[420,436,453,470,488,505,523,546,565,585,607,631], backgroundColor:a(TEAL,.7), borderRadius:2, stack:'s' },
         { label:'Ultra', data:[220,232,244,256,267,279,291,303,316,329,341,354], backgroundColor:a(ORANGE,.7), borderRadius:2, stack:'s' }
       ]},
-      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
+      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
         stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
-        scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'MAU (K)',font:{size:7}}}}, aspectRatio:1.7 }
+        scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'MAU (K)',font:{size:9}}}}, aspectRatio:1.7 }
     });
   } else {
     var mauRetained = cumMau.map(function(v){ return Math.round(v * 0.75); });
@@ -720,9 +718,9 @@ cfiSkuData.forEach(function(sku) {
         { label:'Activated', data:mauActivated.slice(), backgroundColor:a(GREEN,.7), borderRadius:2, stack:'s' },
         { label:'Resurrected', data:mauResurrected.slice(), backgroundColor:a(BLUE,.7), borderRadius:2, stack:'s' }
       ]},
-      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
+      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
         stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
-        scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'MAU (K)',font:{size:7}}}}, aspectRatio:1.7 }
+        scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'MAU (K)',font:{size:9}}}}, aspectRatio:1.7 }
     });
   }
 });
@@ -777,9 +775,9 @@ cfiSkuData.forEach(function(sku) {
       { label:'Overage', data:r2.ovg.slice(), backgroundColor:a(BLUE,.5), borderRadius:2, stack:'s' },
       { type:'line', label:'Target', data:r2.arrTarget.slice(), borderColor:ORANGE, borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, tension:.3 }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
       stackedTotal:{display:true, formatter:function(v){return '$'+Math.round(v)+'M'}}},
-      scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:7}},title:{display:true,text:'ARR ($M)',font:{size:7}}}}, aspectRatio:1.7 }
+      scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:9}},title:{display:true,text:'ARR ($M)',font:{size:9}}}}, aspectRatio:1.7 }
   });
 
   // Gross Profit by Usage Percentile — stacked bar + overall GM% line + GP total line
@@ -795,15 +793,15 @@ cfiSkuData.forEach(function(sku) {
       { type:'line', label:'Overall GM %', data:sku._gmOverall.slice(), borderColor:'#E6EDF3', borderWidth:2.5, pointRadius:2, tension:.3, fill:false, yAxisID:'y1', pointBackgroundColor:'#E6EDF3', order:0 },
       { type:'line', label:'Total GP ($M)', data:gpTotalLine, borderColor:PURPLE, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y', borderDash:[4,3], order:0 }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
       annotation:{annotations:{
         zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.2)',borderWidth:1},
         target:{type:'line',yMin:-30,yMax:-30,borderColor:GREEN,borderWidth:1.5,borderDash:[6,4],yScaleID:'y1',
-          label:{display:true,content:'-30% target',position:'end',backgroundColor:'transparent',color:GREEN,font:{size:7}}}
+          label:{display:true,content:'-30% target',position:'end',backgroundColor:'transparent',color:GREEN,font:{size:9}}}
       }}},
       scales:{x:{stacked:true,grid:{display:false}},
-        y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:7}},title:{display:true,text:'Gross Profit ($M)',font:{size:7}}},
-        y1:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:7}},title:{display:true,text:'Overall GM %',font:{size:7}}}
+        y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:9}},title:{display:true,text:'Gross Profit ($M)',font:{size:9}}},
+        y1:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'Overall GM %',font:{size:9}}}
       }, aspectRatio:1.7 }
   });
 
@@ -817,11 +815,11 @@ cfiSkuData.forEach(function(sku) {
       { label:'MAU-only', data:mauOnly, backgroundColor:a('#8B949E',.3), borderRadius:2, stack:'s', yAxisID:'y' },
       { type:'line', label:'WAU/MAU %', data:st.wauMau.slice(), borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y1' }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
       stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
       scales:{x:{stacked:true,grid:{display:false}},
-        y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Users (K)',font:{size:7}}},
-        y1:{position:'right',min:0,max:100,grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:7}},title:{display:true,text:'Ratio %',font:{size:7}}}}, aspectRatio:1.7 }
+        y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Users (K)',font:{size:9}}},
+        y1:{position:'right',min:0,max:100,grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'Ratio %',font:{size:9}}}}, aspectRatio:1.7 }
   });
 
   // Retention Milestones
@@ -833,8 +831,8 @@ cfiSkuData.forEach(function(sku) {
       { label:'M6', data:rm.m6.slice(), borderColor:TEAL, borderWidth:1.5, tension:.3, fill:false, pointRadius:1 },
       { label:'M12', data:rm.m12.slice(), borderColor:ORANGE, borderWidth:1.5, tension:.3, fill:false, pointRadius:1, borderDash:[4,3] }
     ]},
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
-      scales:{x:{grid:{display:false}}, y:{min:30,max:90,ticks:{callback:function(v){return v+'%'},font:{size:7}},title:{display:true,text:'% Retained',font:{size:7}}}}, aspectRatio:1.7 }
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{min:30,max:90,ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'% Retained',font:{size:9}}}}, aspectRatio:1.7 }
   });
 });
 
@@ -892,7 +890,7 @@ function rebuildCfiGrowth() {
     }
     var ch;
     ch = cfiCharts['mau-'+sku.key];
-    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = actData; ch.data.datasets[1].data = resData; ch.data.datasets[2].data = churnData.map(function(v){return -v}); ch.data.datasets[3].data = netData; ch.data.datasets[4].data = sliceTime(sku._cumMau); ch.update('none'); }
+    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = actData; ch.data.datasets[1].data = resData; ch.data.datasets[2].data = churnData.map(function(v){return -v}); ch.data.datasets[3].data = netData; ch.update('none'); }
     ch = cfiCharts['act-'+sku.key];
     if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = sliceTime(sku._actDirect); ch.data.datasets[1].data = sliceTime(sku._actTrials); ch.data.datasets[2].data = sliceTime(sku._actUpsell); ch.update('none'); }
     ch = cfiCharts['res-'+sku.key];
@@ -941,6 +939,42 @@ var cfiSkuResData = {
 };
 var cfiSkuColors = { Pro:BLUE, 'Pro+':PURPLE, Max:TEAL, Ultra:ORANGE };
 
+// MAU Growth toggle: by Type (act/res/churn/net) or by SKU (net growth per SKU)
+window.switchCfiMauGrowth = function(mode) {
+  var ch = cfiCharts['mau-total'];
+  if (ch) ch.destroy();
+  var sku = cfiSkuData[0];
+  var datasets;
+  if (mode === 'sku') {
+    // Net growth per SKU as stacked bar
+    datasets = ['Pro','Pro+','Max','Ultra'].map(function(sk) {
+      var idx = { Pro:1, 'Pro+':2, Max:3, Ultra:4 };
+      var s = cfiSkuData[idx[sk]];
+      var skNet = s.act.map(function(v,i){ return v + s.res[i] - s.churn[i]; });
+      return { label:sk, data:skNet.slice(), backgroundColor:a(cfiSkuColors[sk],.7), borderRadius:2, stack:'g', order:1 };
+    });
+    // Total net line
+    datasets.push({ type:'line', label:'Total Net', data:sku._net.slice(), borderColor:PURPLE, borderWidth:2, pointRadius:2, tension:.3, fill:false, order:0 });
+  } else {
+    datasets = [
+      { label:'Activations', data:sku.act.slice(), backgroundColor:a(GREEN,.7), borderRadius:2, stack:'g', order:1 },
+      { label:'Resurrections', data:sku.res.slice(), backgroundColor:a(BLUE,.6), borderRadius:2, stack:'g', order:1 },
+      { label:'Churn', data:sku.churn.map(function(v){return -v}), backgroundColor:a(RED,.6), borderRadius:2, stack:'g', order:1 },
+      { type:'line', label:'Net Growth', data:sku._net.slice(), borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false, order:0 }
+    ];
+  }
+  cfiCharts['mau-total'] = new Chart(document.getElementById('cfi-mau-total'), {
+    type:'bar', data:{ labels:MONTHS, datasets:datasets },
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}},
+      datalabels: stackedDatalabels(function(v){return Math.abs(Math.round(v))+'K'}, 0.08),
+      stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:8}}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:8}}}}, aspectRatio:1.7 }
+  });
+  document.getElementById('cfi-mau-total').closest('.card').querySelectorAll('.act-toggle').forEach(function(b) {
+    b.classList.toggle('active', b.textContent.toLowerCase().indexOf(mode) >= 0);
+  });
+};
+
 window.switchCfiAct = function(mode) {
   var ch = cfiCharts['act-total'];
   if (ch) ch.destroy();
@@ -959,8 +993,8 @@ window.switchCfiAct = function(mode) {
   }
   cfiCharts['act-total'] = new Chart(document.getElementById('cfi-act-total'), {
     type:'line', data:{ labels:MONTHS, datasets:datasets },
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
-      scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Activations (K)',font:{size:7}}}}, aspectRatio:1.7 }
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Activations (K)',font:{size:9}}}}, aspectRatio:1.7 }
   });
   document.getElementById('cfi-act-total').closest('.card').querySelectorAll('.act-toggle').forEach(function(b) {
     b.classList.toggle('active', b.textContent.toLowerCase().indexOf(mode) >= 0);
@@ -985,8 +1019,8 @@ window.switchCfiRes = function(mode) {
   }
   cfiCharts['res-total'] = new Chart(document.getElementById('cfi-res-total'), {
     type:'line', data:{ labels:MONTHS, datasets:datasets },
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
-      scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Resurrections (K)',font:{size:7}}}}, aspectRatio:1.7 }
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Resurrections (K)',font:{size:9}}}}, aspectRatio:1.7 }
   });
   document.getElementById('cfi-res-total').closest('.card').querySelectorAll('.act-toggle').forEach(function(b) {
     b.classList.toggle('active', b.textContent.toLowerCase().indexOf(mode) >= 0);
@@ -1013,8 +1047,8 @@ window.switchCfiArr = function(mode) {
   }
   cfiCharts['arr-total'] = new Chart(document.getElementById('cfi-arr-total'), {
     type:'bar', data:{ labels:MONTHS, datasets:datasets },
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}, stackedTotal:{display:true, formatter:function(v){return '$'+Math.round(v)+'M'}}},
-      scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:7}},title:{display:true,text:'ARR ($M)',font:{size:7}}}}, aspectRatio:1.7 }
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false}, stackedTotal:{display:true, formatter:function(v){return '$'+Math.round(v)+'M'}}},
+      scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:9}},title:{display:true,text:'ARR ($M)',font:{size:9}}}}, aspectRatio:1.7 }
   });
   document.getElementById('cfi-arr-total').closest('.card').querySelectorAll('.act-toggle').forEach(function(b) {
     b.classList.toggle('active', b.textContent.toLowerCase().indexOf(mode) >= 0 || (mode==='type' && b.textContent.indexOf('Sub')>=0));
@@ -1055,9 +1089,9 @@ window.switchCfiGp = function(mode) {
 
   cfiCharts['gm-total'] = new Chart(document.getElementById('cfi-gm-total'), {
     type:'bar', data:{ labels:MONTHS, datasets:datasets },
-    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
-      annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.2)',borderWidth:1},target:{type:'line',yMin:-30,yMax:-30,borderColor:GREEN,borderWidth:1.5,borderDash:[6,4],yScaleID:'y1',label:{display:true,content:'-30% target',position:'end',backgroundColor:'transparent',color:GREEN,font:{size:7}}}}}},
-      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:7}},title:{display:true,text:'Gross Profit ($M)',font:{size:7}}},y1:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:7}},title:{display:true,text:'Overall GM %',font:{size:7}}}}, aspectRatio:1.7 }
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
+      annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.2)',borderWidth:1},target:{type:'line',yMin:-30,yMax:-30,borderColor:GREEN,borderWidth:1.5,borderDash:[6,4],yScaleID:'y1',label:{display:true,content:'-30% target',position:'end',backgroundColor:'transparent',color:GREEN,font:{size:9}}}}}},
+      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:9}},title:{display:true,text:'Gross Profit ($M)',font:{size:9}}},y1:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'Overall GM %',font:{size:9}}}}, aspectRatio:1.7 }
   });
   document.getElementById('cfi-gm-total').closest('.card').querySelectorAll('.act-toggle').forEach(function(b) {
     b.classList.toggle('active', b.textContent.toLowerCase().indexOf(mode) >= 0 || (mode==='pct' && b.textContent.indexOf('Percentile')>=0));
