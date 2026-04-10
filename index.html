@@ -280,7 +280,12 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
 <!-- ── EXEC SUMMARY ── -->
 <section class="section" id="exec">
   <div class="section-header"><h2>Executive Summary</h2><p>Key performance indicators at a glance</p></div>
-  <div class="grid grid-4" id="kpi-tiles"></div>
+  <div class="grid grid-4">
+    <div class="card-placeholder"><div class="card-title">Placeholder 1</div></div>
+    <div class="card-placeholder"><div class="card-title">Placeholder 2</div></div>
+    <div class="card-placeholder"><div class="card-title">Placeholder 3</div></div>
+    <div class="card-placeholder"><div class="card-title">Placeholder 4</div></div>
+  </div>
 </section>
 
 <!-- ── USER GROWTH ── -->
@@ -1593,6 +1598,11 @@ function rebuildAll() {
   // 19. Funnel — re-render with time range multiplier
   if (typeof window.rebuildFunnel === 'function') {
     window.rebuildFunnel();
+  }
+
+  // 20. CfI Growth charts
+  if (typeof rebuildCfiGrowth === 'function') {
+    rebuildCfiGrowth();
   }
 }
 
@@ -3070,58 +3080,85 @@ allCharts.expansion = new Chart(document.getElementById('ch-expansion'), {
 // ══════════════════════════════
 //  CfI USER GROWTH CHARTS
 // ══════════════════════════════
-(function() {
-  var skus = [
-    { key:'total', color:PURPLE, act:[85,90,95,92,98,100,105,110,108,115,118,122], res:[12,14,13,15,16,14,18,17,19,20,18,22], churn:[35,38,36,40,42,39,44,42,46,48,45,50] },
-    { key:'pro', color:BLUE, act:[30,32,34,33,36,38,40,42,41,44,46,48], res:[4,5,4,5,5,5,6,6,6,7,6,7], churn:[12,13,12,14,14,13,15,14,15,16,15,17] },
-    { key:'proplus', color:PURPLE, act:[18,20,22,20,22,22,24,24,23,25,26,26], res:[3,3,3,4,4,3,4,4,5,5,4,5], churn:[8,9,8,10,10,9,10,10,11,11,10,12] },
-    { key:'max', color:TEAL, act:[22,23,24,24,25,25,26,28,28,29,30,31], res:[3,4,4,4,5,4,5,5,5,5,5,7], churn:[10,11,11,11,12,12,13,12,14,14,13,14] },
-    { key:'ultra', color:ORANGE, act:[15,15,15,15,15,15,15,16,16,17,16,17], res:[2,2,2,2,2,2,3,2,3,3,3,3], churn:[5,5,5,5,6,5,6,6,6,7,7,7] }
-  ];
-  skus.forEach(function(sku) {
-    var net = sku.act.map(function(v,i){ return v + sku.res[i] - sku.churn[i]; });
-    var retained = sku.act.map(function(v,i){ return Math.round((sku.act.slice(0,i+1).reduce(function(s,x,j){ return s+x+sku.res[j]-sku.churn[j]; },0))*0.8); });
-    // MAU Growth
-    new Chart(document.getElementById('cfi-mau-'+sku.key), {
-      type:'bar',
-      data:{ labels:MONTHS, datasets:[
-        { label:'Activations', data:sku.act.slice(), backgroundColor:a(GREEN,.7), borderRadius:2, stack:'g' },
-        { label:'Resurrections', data:sku.res.slice(), backgroundColor:a(BLUE,.6), borderRadius:2, stack:'g' },
-        { label:'Churn', data:sku.churn.map(function(v){return -v}), backgroundColor:a(RED,.6), borderRadius:2, stack:'g' },
-        { type:'line', label:'Net Growth', data:net, borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false }
-      ]},
-      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
-        scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}}}}, aspectRatio:1.7 }
-    });
-    // Activations
-    new Chart(document.getElementById('cfi-act-'+sku.key), {
-      type:'line',
-      data:{ labels:MONTHS, datasets:[
-        { label:'Activations', data:sku.act.slice(), borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
-      ]},
-      options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
-        scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Activations (K)',font:{size:7}}}}, aspectRatio:1.7 }
-    });
-    // Resurrections
-    new Chart(document.getElementById('cfi-res-'+sku.key), {
-      type:'line',
-      data:{ labels:MONTHS, datasets:[
-        { label:'Resurrections', data:sku.res.slice(), borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
-      ]},
-      options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
-        scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Resurrections (K)',font:{size:7}}}}, aspectRatio:1.7 }
-    });
-    // Retained Users
-    new Chart(document.getElementById('cfi-ret-'+sku.key), {
-      type:'line',
-      data:{ labels:MONTHS, datasets:[
-        { label:'Retained Users', data:retained, borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
-      ]},
-      options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
-        scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Retained (K)',font:{size:7}}}}, aspectRatio:1.7 }
-    });
+var cfiCharts = {};
+var cfiSkuData = [
+  { key:'total', color:PURPLE, act:[85,90,95,92,98,100,105,110,108,115,118,122], res:[12,14,13,15,16,14,18,17,19,20,18,22], churn:[35,38,36,40,42,39,44,42,46,48,45,50] },
+  { key:'pro', color:BLUE, act:[30,32,34,33,36,38,40,42,41,44,46,48], res:[4,5,4,5,5,5,6,6,6,7,6,7], churn:[12,13,12,14,14,13,15,14,15,16,15,17] },
+  { key:'proplus', color:PURPLE, act:[18,20,22,20,22,22,24,24,23,25,26,26], res:[3,3,3,4,4,3,4,4,5,5,4,5], churn:[8,9,8,10,10,9,10,10,11,11,10,12] },
+  { key:'max', color:TEAL, act:[22,23,24,24,25,25,26,28,28,29,30,31], res:[3,4,4,4,5,4,5,5,5,5,5,7], churn:[10,11,11,11,12,12,13,12,14,14,13,14] },
+  { key:'ultra', color:ORANGE, act:[15,15,15,15,15,15,15,16,16,17,16,17], res:[2,2,2,2,2,2,3,2,3,3,3,3], churn:[5,5,5,5,6,5,6,6,6,7,7,7] }
+];
+cfiSkuData.forEach(function(sku) {
+  var net = sku.act.map(function(v,i){ return v + sku.res[i] - sku.churn[i]; });
+  var retained = sku.act.map(function(v,i){ return Math.round((sku.act.slice(0,i+1).reduce(function(s,x,j){ return s+x+sku.res[j]-sku.churn[j]; },0))*0.8); });
+  sku._net = net; sku._retained = retained;
+
+  cfiCharts['mau-'+sku.key] = new Chart(document.getElementById('cfi-mau-'+sku.key), {
+    type:'bar',
+    data:{ labels:MONTHS, datasets:[
+      { label:'Activations', data:sku.act.slice(), backgroundColor:a(GREEN,.7), borderRadius:2, stack:'g' },
+      { label:'Resurrections', data:sku.res.slice(), backgroundColor:a(BLUE,.6), borderRadius:2, stack:'g' },
+      { label:'Churn', data:sku.churn.map(function(v){return -v}), backgroundColor:a(RED,.6), borderRadius:2, stack:'g' },
+      { type:'line', label:'Net Growth', data:net.slice(), borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false }
+    ]},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}}}}, aspectRatio:1.7 }
   });
-})();
+  cfiCharts['act-'+sku.key] = new Chart(document.getElementById('cfi-act-'+sku.key), {
+    type:'line',
+    data:{ labels:MONTHS, datasets:[
+      { label:'Activations', data:sku.act.slice(), borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
+    ]},
+    options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Activations (K)',font:{size:7}}}}, aspectRatio:1.7 }
+  });
+  cfiCharts['res-'+sku.key] = new Chart(document.getElementById('cfi-res-'+sku.key), {
+    type:'line',
+    data:{ labels:MONTHS, datasets:[
+      { label:'Resurrections', data:sku.res.slice(), borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
+    ]},
+    options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Resurrections (K)',font:{size:7}}}}, aspectRatio:1.7 }
+  });
+  cfiCharts['ret-'+sku.key] = new Chart(document.getElementById('cfi-ret-'+sku.key), {
+    type:'line',
+    data:{ labels:MONTHS, datasets:[
+      { label:'Retained Users', data:retained.slice(), borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
+    ]},
+    options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Retained (K)',font:{size:7}}}}, aspectRatio:1.7 }
+  });
+});
+
+// Rebuild CfI charts on toggle
+function rebuildCfiGrowth() {
+  var labels = getCurrentLabels();
+  cfiSkuData.forEach(function(sku) {
+    var actData, resData, churnData, netData, retData;
+    if (timeGranularity === 'weekly') {
+      actData = interpolateToWeekly(sku.act).slice(interpolateToWeekly(sku.act).length - timeRange * 4);
+      resData = interpolateToWeekly(sku.res).slice(interpolateToWeekly(sku.res).length - timeRange * 4);
+      churnData = interpolateToWeekly(sku.churn).slice(interpolateToWeekly(sku.churn).length - timeRange * 4);
+      netData = interpolateToWeekly(sku._net).slice(interpolateToWeekly(sku._net).length - timeRange * 4);
+      retData = interpolateToWeekly(sku._retained).slice(interpolateToWeekly(sku._retained).length - timeRange * 4);
+    } else {
+      actData = sliceTime(sku.act);
+      resData = sliceTime(sku.res);
+      churnData = sliceTime(sku.churn);
+      netData = sliceTime(sku._net);
+      retData = sliceTime(sku._retained);
+    }
+    var ch;
+    ch = cfiCharts['mau-'+sku.key];
+    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = actData; ch.data.datasets[1].data = resData; ch.data.datasets[2].data = churnData.map(function(v){return -v}); ch.data.datasets[3].data = netData; ch.update('none'); }
+    ch = cfiCharts['act-'+sku.key];
+    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = actData; ch.update('none'); }
+    ch = cfiCharts['res-'+sku.key];
+    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = resData; ch.update('none'); }
+    ch = cfiCharts['ret-'+sku.key];
+    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = retData; ch.update('none'); }
+  });
+}
 
 // Sidebar collapse toggle
 window.toggleSidebar = function() {
