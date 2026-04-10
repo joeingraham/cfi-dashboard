@@ -711,15 +711,16 @@ cfiSkuData.forEach(function(sku) {
   // MAU by SKU (total) or MAU Composition (per-SKU)
   if (sku.key === 'total') {
     cfiCharts['mausku-total'] = new Chart(document.getElementById('cfi-mausku-total'), {
-      type:'line',
+      type:'bar',
       data:{ labels:MONTHS, datasets:[
-        { label:'Pro', data:[480,502,524,543,565,590,611,639,666,695,727,758], borderColor:BLUE, backgroundColor:a(BLUE,.4), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
-        { label:'Pro+', data:[300,314,331,345,361,376,394,412,429,449,469,490], borderColor:PURPLE, backgroundColor:a(PURPLE,.4), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
-        { label:'Max', data:[420,436,453,470,488,505,523,546,565,585,607,631], borderColor:TEAL, backgroundColor:a(TEAL,.4), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
-        { label:'Ultra', data:[220,232,244,256,267,279,291,303,316,329,341,354], borderColor:ORANGE, backgroundColor:a(ORANGE,.4), borderWidth:1.5, pointRadius:1, tension:.3, fill:true }
+        { label:'Pro', data:[480,502,524,543,565,590,611,639,666,695,727,758], backgroundColor:a(BLUE,.7), borderRadius:2, stack:'s' },
+        { label:'Pro+', data:[300,314,331,345,361,376,394,412,429,449,469,490], backgroundColor:a(PURPLE,.7), borderRadius:2, stack:'s' },
+        { label:'Max', data:[420,436,453,470,488,505,523,546,565,585,607,631], backgroundColor:a(TEAL,.7), borderRadius:2, stack:'s' },
+        { label:'Ultra', data:[220,232,244,256,267,279,291,303,316,329,341,354], backgroundColor:a(ORANGE,.7), borderRadius:2, stack:'s' }
       ]},
-      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
-        scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'MAU (K)',font:{size:7}}}}, aspectRatio:1.7 }
+      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
+        stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
+        scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'MAU (K)',font:{size:7}}}}, aspectRatio:1.7 }
     });
   } else {
     var mauRetained = cumMau.map(function(v){ return Math.round(v * 0.75); });
@@ -728,14 +729,15 @@ cfiSkuData.forEach(function(sku) {
     sku._mauRetained = mauRetained; sku._mauActivated = mauActivated; sku._mauResurrected = mauResurrected;
 
     cfiCharts['maucomp-'+sku.key] = new Chart(document.getElementById('cfi-maucomp-'+sku.key), {
-      type:'line',
+      type:'bar',
       data:{ labels:MONTHS, datasets:[
-        { label:'Retained', data:mauRetained.slice(), borderColor:TEAL, backgroundColor:a(TEAL,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
-        { label:'Activated', data:mauActivated.slice(), borderColor:GREEN, backgroundColor:a(GREEN,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true },
-        { label:'Resurrected', data:mauResurrected.slice(), borderColor:BLUE, backgroundColor:a(BLUE,.5), borderWidth:1.5, pointRadius:1, tension:.3, fill:true }
+        { label:'Retained', data:mauRetained.slice(), backgroundColor:a(TEAL,.7), borderRadius:2, stack:'s' },
+        { label:'Activated', data:mauActivated.slice(), backgroundColor:a(GREEN,.7), borderRadius:2, stack:'s' },
+        { label:'Resurrected', data:mauResurrected.slice(), backgroundColor:a(BLUE,.7), borderRadius:2, stack:'s' }
       ]},
-      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
-        scales:{x:{grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'MAU (K)',font:{size:7}}}}, aspectRatio:1.7 }
+      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
+        stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
+        scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'MAU (K)',font:{size:7}}}}, aspectRatio:1.7 }
     });
   }
 });
@@ -795,7 +797,8 @@ cfiSkuData.forEach(function(sku) {
       scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:7}},title:{display:true,text:'ARR ($M)',font:{size:7}}}}, aspectRatio:1.7 }
   });
 
-  // Gross Profit by Usage Percentile — stacked bar + overall GM% line with target
+  // Gross Profit by Usage Percentile — stacked bar + overall GM% line + GP total line
+  var gpTotalLine = gm.p50.map(function(v,i){ return Math.round((v + gm.p75[i] + gm.p90[i] + gm.p99[i] + gm.p99p[i])*10)/10; });
   cfiCharts['gm-'+k] = new Chart(document.getElementById('cfi-gm-'+k), {
     type:'bar',
     data:{ labels:MONTHS, datasets:[
@@ -804,7 +807,8 @@ cfiSkuData.forEach(function(sku) {
       { label:'P75-90', data:gm.p90.slice(), backgroundColor:'#7B68EE', borderRadius:2, stack:'s', order:1 },
       { label:'P90-99', data:gm.p99.slice(), backgroundColor:'#FFB08E', borderRadius:2, stack:'s', order:1 },
       { label:'P99+', data:gm.p99p.slice(), backgroundColor:'#FD71AF', borderRadius:2, stack:'s', order:1 },
-      { type:'line', label:'Overall GM %', data:sku._gmOverall.slice(), borderColor:'#E6EDF3', borderWidth:2.5, pointRadius:2, tension:.3, fill:false, yAxisID:'y1', pointBackgroundColor:'#E6EDF3', order:0 }
+      { type:'line', label:'Overall GM %', data:sku._gmOverall.slice(), borderColor:'#E6EDF3', borderWidth:2.5, pointRadius:2, tension:.3, fill:false, yAxisID:'y1', pointBackgroundColor:'#E6EDF3', order:0 },
+      { type:'line', label:'Total GP ($M)', data:gpTotalLine, borderColor:PURPLE, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y', borderDash:[4,3], order:0 }
     ]},
     options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
       annotation:{annotations:{
@@ -1037,24 +1041,33 @@ window.switchCfiGp = function(mode) {
   if (ch) ch.destroy();
   var gm = gmPctData.total;
   var sku = cfiSkuData[0];
+  // GP in $M per SKU (illustrative)
+  var gpBySku = {
+    Pro:  [-8,-9,-11,-14,-17,-21,-24,-29,-33,-39,-44,-51],
+    'Pro+': [-8,-8,-9,-10,-12,-14,-16,-18,-21,-25,-29,-34],
+    Max:  [-5,-6,-7,-8,-9,-10,-12,-14,-16,-18,-20,-22],
+    Ultra:[-3,-4,-5,-6,-7,-8,-9,-10,-12,-14,-16,-18]
+  };
+  // Total GP $ (sum of all SKUs)
+  var gpTotal = gpBySku.Pro.map(function(v,i){ return v + gpBySku['Pro+'][i] + gpBySku.Max[i] + gpBySku.Ultra[i]; });
   var datasets;
   if (mode === 'sku') {
     datasets = ['Pro','Pro+','Max','Ultra'].map(function(sk) {
-      var key = sk === 'Pro+' ? 'proplus' : sk.toLowerCase();
-      var skGm = gmPctData[key];
-      return { label:sk, data:skGm.p50.slice(), backgroundColor:a(cfiSkuColors[sk],.6), borderRadius:2, stack:'s', order:1 };
+      return { label:sk, data:gpBySku[sk].slice(), backgroundColor:a(cfiSkuColors[sk],.6), borderRadius:2, stack:'s', order:1 };
     });
-    datasets.push({ type:'line', label:'Overall GM %', data:sku._gmOverall.slice(), borderColor:'#E6EDF3', borderWidth:2.5, pointRadius:2, tension:.3, fill:false, yAxisID:'y1', pointBackgroundColor:'#E6EDF3', order:0 });
   } else {
     datasets = [
       { label:'P0-50', data:gm.p50.slice(), backgroundColor:'#79D9B9', borderRadius:2, stack:'s', order:1 },
       { label:'P50-75', data:gm.p75.slice(), backgroundColor:'#49CCF9', borderRadius:2, stack:'s', order:1 },
       { label:'P75-90', data:gm.p90.slice(), backgroundColor:'#7B68EE', borderRadius:2, stack:'s', order:1 },
       { label:'P90-99', data:gm.p99.slice(), backgroundColor:'#FFB08E', borderRadius:2, stack:'s', order:1 },
-      { label:'P99+', data:gm.p99p.slice(), backgroundColor:'#FD71AF', borderRadius:2, stack:'s', order:1 },
-      { type:'line', label:'Overall GM %', data:sku._gmOverall.slice(), borderColor:'#E6EDF3', borderWidth:2.5, pointRadius:2, tension:.3, fill:false, yAxisID:'y1', pointBackgroundColor:'#E6EDF3', order:0 }
+      { label:'P99+', data:gm.p99p.slice(), backgroundColor:'#FD71AF', borderRadius:2, stack:'s', order:1 }
     ];
   }
+  // Always add both lines: Overall GM % and Total GP $
+  datasets.push({ type:'line', label:'Overall GM %', data:sku._gmOverall.slice(), borderColor:'#E6EDF3', borderWidth:2.5, pointRadius:2, tension:.3, fill:false, yAxisID:'y1', pointBackgroundColor:'#E6EDF3', order:0 });
+  datasets.push({ type:'line', label:'Total GP ($M)', data:gpTotal.slice(), borderColor:PURPLE, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y', borderDash:[4,3], order:0 });
+
   cfiCharts['gm-total'] = new Chart(document.getElementById('cfi-gm-total'), {
     type:'bar', data:{ labels:MONTHS, datasets:datasets },
     options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
