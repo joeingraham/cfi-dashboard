@@ -243,10 +243,28 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
     <span class="nav-icon"><svg viewBox="0 0 16 16"><path d="M0 1.75A.75.75 0 0 1 .75 1h14.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 1.75zm0 5A.75.75 0 0 1 .75 6h14.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 6.75zm0 5A.75.75 0 0 1 .75 11h14.5a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75z"/></svg></span>
     <span class="nav-label">Executive Summary</span>
   </a>
-  <a class="nav-item" href="#growth" data-section="growth">
-    <span class="nav-icon"><svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm.75 4.75a.75.75 0 0 0-1.5 0v2.5h-2.5a.75.75 0 0 0 0 1.5h2.5v2.5a.75.75 0 0 0 1.5 0v-2.5h2.5a.75.75 0 0 0 0-1.5h-2.5v-2.5z"/></svg></span>
-    <span class="nav-label">User Growth & Acquisition</span>
+  <div style="padding:8px 20px 4px;font-size:9px;font-weight:600;color:#8B949E;text-transform:uppercase;letter-spacing:1px">Plans</div>
+  <a class="nav-item" href="#sku-total" data-section="sku-total">
+    <span class="nav-icon" style="color:#7B68EE;font-size:16px">●</span>
+    <span class="nav-label">Total</span>
   </a>
+  <a class="nav-item" href="#sku-pro" data-section="sku-pro">
+    <span class="nav-icon" style="color:#49CCF9;font-size:16px">●</span>
+    <span class="nav-label">Pro</span>
+  </a>
+  <a class="nav-item" href="#sku-proplus" data-section="sku-proplus">
+    <span class="nav-icon" style="color:#7B68EE;font-size:16px">●</span>
+    <span class="nav-label">Pro+</span>
+  </a>
+  <a class="nav-item" href="#sku-max" data-section="sku-max">
+    <span class="nav-icon" style="color:#79D9B9;font-size:16px">●</span>
+    <span class="nav-label">Max</span>
+  </a>
+  <a class="nav-item" href="#sku-ultra" data-section="sku-ultra">
+    <span class="nav-icon" style="color:#FFB08E;font-size:16px">●</span>
+    <span class="nav-label">Ultra</span>
+  </a>
+  <div style="padding:8px 20px 4px;font-size:9px;font-weight:600;color:#8B949E;text-transform:uppercase;letter-spacing:1px">Sections</div>
   <a class="nav-item" href="#finance" data-section="finance">
     <span class="nav-icon"><svg viewBox="0 0 16 16"><path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm.25-11.25a.75.75 0 0 0-1.5 0v1h-.5a2.25 2.25 0 0 0 0 4.5h.5v1.5h-.75a.75.75 0 0 0 0 1.5h.75v.5a.75.75 0 0 0 1.5 0v-.5H9a2.25 2.25 0 0 0 0-4.5H7.75v-1.5h.5a.75.75 0 0 0 0-1.5h-.5v-.5z"/></svg></span>
     <span class="nav-label">Finance</span>
@@ -288,43 +306,53 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
   </div>
 </section>
 
-<!-- ── USER GROWTH ── -->
-<section class="section" id="growth">
-  <div class="section-header"><h2>User Growth</h2><p>MAU trends, activations, resurrections, and retention by plan</p></div>
-
-  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:12px 0 8px;padding-left:10px;border-left:3px solid #7B68EE">Total</h3>
+<!-- ── TOTAL ── -->
+<section class="section" id="sku-total">
+  <div class="section-header" style="border-left-color:#7B68EE"><h2>Total</h2><p>All plans combined — MAU trends, activations, resurrections, and retention</p></div>
   <div class="grid grid-4">
     <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-total"></canvas></div></div>
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-total"></canvas></div></div>
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-total"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-total"></canvas></div></div>
   </div>
+</section>
 
-  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:16px 0 8px;padding-left:10px;border-left:3px solid #49CCF9">Pro</h3>
+<!-- ── PRO ── -->
+<section class="section" id="sku-pro">
+  <div class="section-header" style="border-left-color:#49CCF9"><h2>Pro</h2><p>Pro plan — user growth metrics</p></div>
   <div class="grid grid-4">
     <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-pro"></canvas></div></div>
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-pro"></canvas></div></div>
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-pro"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-pro"></canvas></div></div>
   </div>
+</section>
 
-  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:16px 0 8px;padding-left:10px;border-left:3px solid #7B68EE">Pro+</h3>
+<!-- ── PRO+ ── -->
+<section class="section" id="sku-proplus">
+  <div class="section-header" style="border-left-color:#7B68EE"><h2>Pro+</h2><p>Pro+ plan — user growth metrics</p></div>
   <div class="grid grid-4">
     <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-proplus"></canvas></div></div>
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-proplus"></canvas></div></div>
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-proplus"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-proplus"></canvas></div></div>
   </div>
+</section>
 
-  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:16px 0 8px;padding-left:10px;border-left:3px solid #79D9B9">Max</h3>
+<!-- ── MAX ── -->
+<section class="section" id="sku-max">
+  <div class="section-header" style="border-left-color:#79D9B9"><h2>Max</h2><p>Max plan — user growth metrics</p></div>
   <div class="grid grid-4">
     <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-max"></canvas></div></div>
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-max"></canvas></div></div>
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-max"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-max"></canvas></div></div>
   </div>
+</section>
 
-  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:16px 0 8px;padding-left:10px;border-left:3px solid #FFB08E">Ultra</h3>
+<!-- ── ULTRA ── -->
+<section class="section" id="sku-ultra">
+  <div class="section-header" style="border-left-color:#FFB08E"><h2>Ultra</h2><p>Ultra plan — user growth metrics</p></div>
   <div class="grid grid-4">
     <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-ultra"></canvas></div></div>
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-ultra"></canvas></div></div>
