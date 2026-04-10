@@ -315,6 +315,12 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-total"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-total"></canvas></div></div>
   </div>
+  <div class="grid grid-4" style="margin-top:12px">
+    <div class="card"><div class="card-title">ARR (Actual vs Target) <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-arr-total"></canvas></div></div>
+    <div class="card"><div class="card-title">Gross Margin by Usage Percentile <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-gm-total"></canvas></div></div>
+    <div class="card"><div class="card-title"><span>Stickiness</span> <span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchSticky('total','wau')">WAU/MAU</button><button class="act-toggle" onclick="switchSticky('total','dau')">DAU/WAU</button></span></div><div class="chart-wrap"><canvas id="cfi-sticky-total"></canvas></div></div>
+    <div class="card"><div class="card-title">Retention Milestones <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-retmile-total"></canvas></div></div>
+  </div>
 </section>
 
 <!-- ── PRO ── -->
@@ -325,6 +331,12 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-pro"></canvas></div></div>
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-pro"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-pro"></canvas></div></div>
+  </div>
+  <div class="grid grid-4" style="margin-top:12px">
+    <div class="card"><div class="card-title">ARR (Actual vs Target) <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-arr-pro"></canvas></div></div>
+    <div class="card"><div class="card-title">Gross Margin by Usage Percentile <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-gm-pro"></canvas></div></div>
+    <div class="card"><div class="card-title"><span>Stickiness</span> <span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchSticky('pro','wau')">WAU/MAU</button><button class="act-toggle" onclick="switchSticky('pro','dau')">DAU/WAU</button></span></div><div class="chart-wrap"><canvas id="cfi-sticky-pro"></canvas></div></div>
+    <div class="card"><div class="card-title">Retention Milestones <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-retmile-pro"></canvas></div></div>
   </div>
 </section>
 
@@ -337,6 +349,12 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-proplus"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-proplus"></canvas></div></div>
   </div>
+  <div class="grid grid-4" style="margin-top:12px">
+    <div class="card"><div class="card-title">ARR (Actual vs Target) <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-arr-proplus"></canvas></div></div>
+    <div class="card"><div class="card-title">Gross Margin by Usage Percentile <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-gm-proplus"></canvas></div></div>
+    <div class="card"><div class="card-title"><span>Stickiness</span> <span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchSticky('proplus','wau')">WAU/MAU</button><button class="act-toggle" onclick="switchSticky('proplus','dau')">DAU/WAU</button></span></div><div class="chart-wrap"><canvas id="cfi-sticky-proplus"></canvas></div></div>
+    <div class="card"><div class="card-title">Retention Milestones <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-retmile-proplus"></canvas></div></div>
+  </div>
 </section>
 
 <!-- ── MAX ── -->
@@ -348,6 +366,12 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-max"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-max"></canvas></div></div>
   </div>
+  <div class="grid grid-4" style="margin-top:12px">
+    <div class="card"><div class="card-title">ARR (Actual vs Target) <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-arr-max"></canvas></div></div>
+    <div class="card"><div class="card-title">Gross Margin by Usage Percentile <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-gm-max"></canvas></div></div>
+    <div class="card"><div class="card-title"><span>Stickiness</span> <span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchSticky('max','wau')">WAU/MAU</button><button class="act-toggle" onclick="switchSticky('max','dau')">DAU/WAU</button></span></div><div class="chart-wrap"><canvas id="cfi-sticky-max"></canvas></div></div>
+    <div class="card"><div class="card-title">Retention Milestones <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-retmile-max"></canvas></div></div>
+  </div>
 </section>
 
 <!-- ── ULTRA ── -->
@@ -358,6 +382,12 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-ultra"></canvas></div></div>
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-ultra"></canvas></div></div>
     <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-ultra"></canvas></div></div>
+  </div>
+  <div class="grid grid-4" style="margin-top:12px">
+    <div class="card"><div class="card-title">ARR (Actual vs Target) <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-arr-ultra"></canvas></div></div>
+    <div class="card"><div class="card-title">Gross Margin by Usage Percentile <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-gm-ultra"></canvas></div></div>
+    <div class="card"><div class="card-title"><span>Stickiness</span> <span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchSticky('ultra','wau')">WAU/MAU</button><button class="act-toggle" onclick="switchSticky('ultra','dau')">DAU/WAU</button></span></div><div class="chart-wrap"><canvas id="cfi-sticky-ultra"></canvas></div></div>
+    <div class="card"><div class="card-title">Retention Milestones <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-retmile-ultra"></canvas></div></div>
   </div>
 </section>
 
@@ -1668,6 +1698,7 @@ const kpis = [
     tooltip:'Gross Margin<br>(Revenue − COGS) ÷ Revenue<br><b>Current: 68.0%</b><br>+2.1 percentage points vs prior month (65.9% → 68.0%)' },
 ];
 const tilesContainer = document.getElementById('kpi-tiles');
+if (tilesContainer) {
 kpis.forEach((k, i) => {
   const div = document.createElement('div');
   div.className = 'card kpi';
@@ -1681,7 +1712,9 @@ kpis.forEach((k, i) => {
 allCharts.kpi = [];
 kpis.forEach((k, i) => {
   const sparkLabels = ['May \'25','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr \'26'];
-  var sparkChart = new Chart(document.getElementById('spark-'+i), {
+  var sparkCanvas = document.getElementById('spark-'+i);
+  if (!sparkCanvas) return;
+  var sparkChart = new Chart(sparkCanvas, {
     type:'line',
     data:{ labels:sparkLabels, datasets:[{ data:k.data, borderColor:k.color, borderWidth:2,
       fill:true, backgroundColor:a(k.color,.12), tension:.4,
@@ -1723,6 +1756,7 @@ kpis.forEach((k, i) => {
   });
   allCharts.kpi.push(sparkChart);
 });
+} // end if (tilesContainer)
 
 // ══════════════════════════════
 //  1b. GOALS & TARGETS
@@ -2265,8 +2299,8 @@ var funnelRatesTrend = {
 
 // Activations toggle (SKU / Channel)
 window.switchActView = function(view) {
-  var skuCanvas = document.getElementById('ch-act-sku');
-  var chCanvas = document.getElementById('ch-act-channel');
+  var skuCanvas = document.getElementById('ch-act-sku') || document.createElement('canvas');
+  var chCanvas = document.getElementById('ch-act-channel') || document.createElement('canvas');
   var btns = document.querySelectorAll('.act-toggle');
   if (view === 'channel') {
     skuCanvas.style.display = 'none';
@@ -3158,6 +3192,127 @@ cfiSkuData.forEach(function(sku) {
   });
 });
 
+// ROW 2: ARR, Gross Margin, Stickiness, Retention Milestones
+var cfiRow2Data = {
+  total: { arr:[200,220,240,260,285,310,330,350,375,400,425,450], arrTarget:[210,230,250,270,295,320,340,360,385,410,435,460], sub:[160,175,190,205,225,245,260,275,295,315,330,350], ovg:[40,45,50,55,60,65,70,75,80,85,95,100] },
+  pro: { arr:[60,64,68,72,78,84,88,92,98,104,110,118], arrTarget:[65,69,73,77,83,89,93,97,103,109,115,123], sub:[50,53,56,59,64,69,72,75,80,85,90,96], ovg:[10,11,12,13,14,15,16,17,18,19,20,22] },
+  proplus: { arr:[35,40,46,52,58,65,73,82,92,103,115,128], arrTarget:[38,43,49,55,62,69,77,86,96,107,119,132], sub:[28,32,37,42,46,52,58,66,74,82,92,102], ovg:[7,8,9,10,12,13,15,16,18,21,23,26] },
+  max: { arr:[55,58,62,66,72,78,82,86,92,98,104,112], arrTarget:[58,62,66,70,76,82,86,90,96,102,108,116], sub:[44,46,50,53,58,62,66,69,74,78,83,90], ovg:[11,12,12,13,14,16,16,17,18,20,21,22] },
+  ultra: { arr:[50,58,64,70,77,83,87,90,93,95,96,92], arrTarget:[52,60,66,72,79,85,89,92,95,97,98,94], sub:[40,46,51,56,62,66,70,72,74,76,77,74], ovg:[10,12,13,14,15,17,17,18,19,19,19,18] }
+};
+
+var gmPctData = {
+  total: { p50:[72,71,70,69,68,67,66,65,64,63,62,61], p75:[55,54,52,51,49,48,46,45,43,42,40,39], p90:[35,33,31,29,27,25,23,21,19,17,15,13], p99:[10,7,4,1,-2,-5,-8,-11,-14,-17,-20,-23], p99p:[-15,-20,-25,-30,-35,-40,-45,-50,-55,-60,-65,-70] },
+  pro: { p50:[70,69,68,67,66,65,64,63,62,61,60,59], p75:[52,51,49,48,46,45,43,42,40,39,37,36], p90:[30,28,26,24,22,20,18,16,14,12,10,8], p99:[5,2,-1,-4,-7,-10,-13,-16,-19,-22,-25,-28], p99p:[-20,-25,-30,-35,-40,-45,-50,-55,-60,-65,-70,-75] },
+  proplus: { p50:[68,67,66,65,64,63,62,61,60,59,58,57], p75:[48,47,45,44,42,41,39,38,36,35,33,32], p90:[25,23,21,19,17,15,13,11,9,7,5,3], p99:[0,-3,-6,-9,-12,-15,-18,-21,-24,-27,-30,-33], p99p:[-25,-30,-35,-40,-45,-50,-55,-60,-65,-70,-75,-80] },
+  max: { p50:[74,73,72,71,70,69,68,67,66,65,64,63], p75:[58,57,55,54,52,51,49,48,46,45,43,42], p90:[38,36,34,32,30,28,26,24,22,20,18,16], p99:[12,9,6,3,0,-3,-6,-9,-12,-15,-18,-21], p99p:[-10,-15,-20,-25,-30,-35,-40,-45,-50,-55,-60,-65] },
+  ultra: { p50:[65,64,63,62,61,60,59,58,57,56,55,54], p75:[45,44,42,41,39,38,36,35,33,32,30,29], p90:[22,20,18,16,14,12,10,8,6,4,2,0], p99:[-3,-6,-9,-12,-15,-18,-21,-24,-27,-30,-33,-36], p99p:[-28,-33,-38,-43,-48,-53,-58,-63,-68,-73,-78,-83] }
+};
+
+var stickyData = {
+  total: { wauMau:[65,66,67,68,69,70,71,72,73,74,75,76], dauWau:[48,49,50,51,52,53,54,55,56,57,58,59] },
+  pro: { wauMau:[60,61,62,63,64,65,66,67,68,69,70,71], dauWau:[44,45,46,47,48,49,50,51,52,53,54,55] },
+  proplus: { wauMau:[70,71,72,73,74,75,76,77,78,79,80,81], dauWau:[52,53,54,55,56,57,58,59,60,61,62,63] },
+  max: { wauMau:[68,69,70,71,72,73,74,75,76,77,78,79], dauWau:[50,51,52,53,54,55,56,57,58,59,60,61] },
+  ultra: { wauMau:[72,73,74,75,76,77,78,79,80,81,82,83], dauWau:[55,56,57,58,59,60,61,62,63,64,65,66] }
+};
+
+var retMileData = {
+  total: { m1:[72,73,74,75,76,77,78,79,80,81,82,84], m3:[58,59,60,61,62,63,64,65,66,67,68,69], m6:[50,51,51,52,52,53,53,54,55,55,56,57], m12:[42,43,43,44,44,45,45,46,46,47,47,48] },
+  pro: { m1:[68,69,70,71,72,73,74,75,76,77,78,80], m3:[54,55,56,57,58,59,60,61,62,63,64,65], m6:[46,47,47,48,48,49,49,50,51,51,52,53], m12:[38,39,39,40,40,41,41,42,42,43,43,44] },
+  proplus: { m1:[76,77,78,79,80,81,82,83,84,85,86,88], m3:[62,63,64,65,66,67,68,69,70,71,72,73], m6:[54,55,55,56,56,57,57,58,59,59,60,61], m12:[46,47,47,48,48,49,49,50,50,51,51,52] },
+  max: { m1:[74,75,76,77,78,79,80,81,82,83,84,86], m3:[60,61,62,63,64,65,66,67,68,69,70,71], m6:[52,53,53,54,54,55,55,56,57,57,58,59], m12:[44,45,45,46,46,47,47,48,48,49,49,50] },
+  ultra: { m1:[70,71,72,73,74,75,76,77,78,79,80,82], m3:[56,57,58,59,60,61,62,63,64,65,66,67], m6:[48,49,49,50,50,51,51,52,53,53,54,55], m12:[40,41,41,42,42,43,43,44,44,45,45,46] }
+};
+
+var cfiStickyState = { total:'wau', pro:'wau', proplus:'wau', max:'wau', ultra:'wau' };
+
+cfiSkuData.forEach(function(sku) {
+  var k = sku.key;
+  var r2 = cfiRow2Data[k];
+  var gm = gmPctData[k];
+  var st = stickyData[k];
+  var rm = retMileData[k];
+
+  // ARR with actuals (sub+ovg stacked) and target line
+  cfiCharts['arr-'+k] = new Chart(document.getElementById('cfi-arr-'+k), {
+    type:'bar',
+    data:{ labels:MONTHS, datasets:[
+      { label:'Subscription', data:r2.sub.slice(), backgroundColor:a(GREEN,.6), borderRadius:2, stack:'s' },
+      { label:'Overage', data:r2.ovg.slice(), backgroundColor:a(BLUE,.5), borderRadius:2, stack:'s' },
+      { type:'line', label:'Target', data:r2.arrTarget.slice(), borderColor:ORANGE, borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, tension:.3 }
+    ]},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
+      scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'},font:{size:7}},title:{display:true,text:'ARR ($M)',font:{size:7}}}}, aspectRatio:1.7 }
+  });
+
+  // Gross Margin by Usage Percentile
+  cfiCharts['gm-'+k] = new Chart(document.getElementById('cfi-gm-'+k), {
+    type:'line',
+    data:{ labels:MONTHS, datasets:[
+      { label:'P0-50', data:gm.p50.slice(), borderColor:'#79D9B9', borderWidth:2, tension:.3, fill:false, pointRadius:1 },
+      { label:'P50-75', data:gm.p75.slice(), borderColor:'#49CCF9', borderWidth:2, tension:.3, fill:false, pointRadius:1 },
+      { label:'P75-90', data:gm.p90.slice(), borderColor:'#7B68EE', borderWidth:2, tension:.3, fill:false, pointRadius:1 },
+      { label:'P90-99', data:gm.p99.slice(), borderColor:'#FFB08E', borderWidth:2, tension:.3, fill:false, pointRadius:1 },
+      { label:'P99+', data:gm.p99p.slice(), borderColor:'#FD71AF', borderWidth:2, tension:.3, fill:false, pointRadius:1 }
+    ]},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
+      annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.2)',borderWidth:1}}}},
+      scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'%'},font:{size:7}},title:{display:true,text:'Gross Margin %',font:{size:7}}}}, aspectRatio:1.7 }
+  });
+
+  // Stickiness (WAU/MAU default, toggle to DAU/WAU)
+  var stickyPct = st.wauMau.slice();
+  var stickyRest = stickyPct.map(function(v){ return 100-v; });
+  cfiCharts['sticky-'+k] = new Chart(document.getElementById('cfi-sticky-'+k), {
+    type:'bar',
+    data:{ labels:MONTHS, datasets:[
+      { label:'WAU', data:stickyPct, backgroundColor:a(sku.color,.7), borderRadius:2, stack:'s' },
+      { label:'MAU-only', data:stickyRest, backgroundColor:a('#8B949E',.3), borderRadius:2, stack:'s' },
+      { type:'line', label:'Ratio %', data:stickyPct.slice(), borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y1' }
+    ]},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
+      scales:{x:{stacked:true,grid:{display:false}},
+        y:{stacked:true,max:100,ticks:{callback:function(v){return v+'%'},font:{size:7}}},
+        y1:{position:'right',min:0,max:100,grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:7}}}}, aspectRatio:1.7 }
+  });
+
+  // Retention Milestones
+  cfiCharts['retmile-'+k] = new Chart(document.getElementById('cfi-retmile-'+k), {
+    type:'line',
+    data:{ labels:MONTHS, datasets:[
+      { label:'M1', data:rm.m1.slice(), borderColor:PURPLE, borderWidth:2, tension:.3, fill:false, pointRadius:1 },
+      { label:'M3', data:rm.m3.slice(), borderColor:BLUE, borderWidth:1.5, tension:.3, fill:false, pointRadius:1 },
+      { label:'M6', data:rm.m6.slice(), borderColor:TEAL, borderWidth:1.5, tension:.3, fill:false, pointRadius:1 },
+      { label:'M12', data:rm.m12.slice(), borderColor:ORANGE, borderWidth:1.5, tension:.3, fill:false, pointRadius:1, borderDash:[4,3] }
+    ]},
+    options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
+      scales:{x:{grid:{display:false}}, y:{min:30,max:90,ticks:{callback:function(v){return v+'%'},font:{size:7}},title:{display:true,text:'% Retained',font:{size:7}}}}, aspectRatio:1.7 }
+  });
+});
+
+// Stickiness toggle
+window.switchSticky = function(skuKey, mode) {
+  cfiStickyState[skuKey] = mode;
+  var st = stickyData[skuKey];
+  var ch = cfiCharts['sticky-'+skuKey];
+  if (!ch) return;
+  var pct = mode === 'dau' ? st.dauWau.slice() : st.wauMau.slice();
+  var rest = pct.map(function(v){ return 100 - v; });
+  ch.data.datasets[0].data = pct;
+  ch.data.datasets[0].label = mode === 'dau' ? 'DAU' : 'WAU';
+  ch.data.datasets[1].data = rest;
+  ch.data.datasets[1].label = mode === 'dau' ? 'WAU-only' : 'MAU-only';
+  ch.data.datasets[2].data = pct;
+  ch.update('none');
+  var card = document.getElementById('cfi-sticky-'+skuKey).closest('.card');
+  if (card) {
+    card.querySelectorAll('.act-toggle').forEach(function(b) {
+      b.classList.toggle('active', b.textContent.toLowerCase().indexOf(mode) >= 0);
+    });
+  }
+};
+
 // Rebuild CfI charts on toggle
 function rebuildCfiGrowth() {
   var labels = getCurrentLabels();
@@ -3185,6 +3340,28 @@ function rebuildCfiGrowth() {
     if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = resData; ch.update('none'); }
     ch = cfiCharts['ret-'+sku.key];
     if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = retData; ch.update('none'); }
+  });
+  // Row 2 charts
+  cfiSkuData.forEach(function(sku) {
+    var k = sku.key;
+    var r2 = cfiRow2Data[k]; var gm = gmPctData[k]; var st = stickyData[k]; var rm = retMileData[k];
+    var ch;
+    // ARR
+    ch = cfiCharts['arr-'+k];
+    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = sliceTime(r2.sub); ch.data.datasets[1].data = sliceTime(r2.ovg); ch.data.datasets[2].data = sliceTime(r2.arrTarget); ch.update('none'); }
+    // GM
+    ch = cfiCharts['gm-'+k];
+    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = sliceTime(gm.p50); ch.data.datasets[1].data = sliceTime(gm.p75); ch.data.datasets[2].data = sliceTime(gm.p90); ch.data.datasets[3].data = sliceTime(gm.p99); ch.data.datasets[4].data = sliceTime(gm.p99p); ch.update('none'); }
+    // Stickiness
+    ch = cfiCharts['sticky-'+k];
+    if (ch) {
+      var mode = cfiStickyState[k];
+      var pct = sliceTime(mode === 'dau' ? st.dauWau : st.wauMau);
+      ch.data.labels = labels; ch.data.datasets[0].data = pct; ch.data.datasets[1].data = pct.map(function(v){return 100-v}); ch.data.datasets[2].data = pct.slice(); ch.update('none');
+    }
+    // Retention milestones
+    ch = cfiCharts['retmile-'+k];
+    if (ch) { ch.data.labels = labels; ch.data.datasets[0].data = sliceTime(rm.m1); ch.data.datasets[1].data = sliceTime(rm.m3); ch.data.datasets[2].data = sliceTime(rm.m6); ch.data.datasets[3].data = sliceTime(rm.m12); ch.update('none'); }
   });
 }
 
