@@ -274,10 +274,10 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
 <section class="section" id="sku-total">
   <div class="section-header" style="border-left-color:#7B68EE"><h2>Total</h2><p>All plans combined — MAU trends, activations, resurrections, and retention</p></div>
   <div class="grid grid-4">
+    <div class="card"><div class="card-title">MAU by SKU <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mausku-total"></canvas></div></div>
     <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-total"></canvas></div></div>
     <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span><span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchCfiAct('type')">by Type</button><button class="act-toggle" onclick="switchCfiAct('sku')">by SKU</button></span></div><div class="chart-wrap"><canvas id="cfi-act-total"></canvas></div></div>
     <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span><span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchCfiRes('duration')">by Duration</button><button class="act-toggle" onclick="switchCfiRes('sku')">by SKU</button></span></div><div class="chart-wrap"><canvas id="cfi-res-total"></canvas></div></div>
-    <div class="card"><div class="card-title">MAU by SKU <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mausku-total"></canvas></div></div>
   </div>
   <div class="grid grid-4" style="margin-top:12px">
     <div class="card"><div class="card-title">ARR (Actual vs Target) <span class="illustrative">(Illustrative)</span><span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchCfiArr('type')">Sub/Ovg</button><button class="act-toggle" onclick="switchCfiArr('sku')">by SKU</button></span></div><div class="chart-wrap"><canvas id="cfi-arr-total"></canvas></div></div>
