@@ -729,11 +729,11 @@ var gmPctData = {
 };
 
 var stickyData = {
-  total: { wauMau:[65,66,67,68,69,70,71,72,73,74,75,76], dauWau:[48,49,50,51,52,53,54,55,56,57,58,59] },
-  pro: { wauMau:[60,61,62,63,64,65,66,67,68,69,70,71], dauWau:[44,45,46,47,48,49,50,51,52,53,54,55] },
-  proplus: { wauMau:[70,71,72,73,74,75,76,77,78,79,80,81], dauWau:[52,53,54,55,56,57,58,59,60,61,62,63] },
-  max: { wauMau:[68,69,70,71,72,73,74,75,76,77,78,79], dauWau:[50,51,52,53,54,55,56,57,58,59,60,61] },
-  ultra: { wauMau:[72,73,74,75,76,77,78,79,80,81,82,83], dauWau:[55,56,57,58,59,60,61,62,63,64,65,66] }
+  total: { mau:[1420,1515,1610,1706,1800,1895,2002,2114,2226,2350,2495,2662], wauMau:[65,66,67,68,69,70,71,72,73,74,75,76], dauWau:[48,49,50,51,52,53,54,55,56,57,58,59] },
+  pro: { mau:[480,510,540,560,580,600,620,640,660,680,700,720], wauMau:[60,61,62,63,64,65,66,67,68,69,70,71], dauWau:[44,45,46,47,48,49,50,51,52,53,54,55] },
+  proplus: { mau:[300,310,320,330,340,350,360,370,380,390,400,410], wauMau:[70,71,72,73,74,75,76,77,78,79,80,81], dauWau:[52,53,54,55,56,57,58,59,60,61,62,63] },
+  max: { mau:[420,450,480,510,540,570,600,640,680,720,760,800], wauMau:[68,69,70,71,72,73,74,75,76,77,78,79], dauWau:[50,51,52,53,54,55,56,57,58,59,60,61] },
+  ultra: { mau:[220,245,270,306,340,375,422,464,506,560,635,732], wauMau:[72,73,74,75,76,77,78,79,80,81,82,83], dauWau:[55,56,57,58,59,60,61,62,63,64,65,66] }
 };
 
 var retMileData = {
@@ -784,21 +784,21 @@ cfiSkuData.forEach(function(sku) {
       scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return v+'%'},font:{size:7}},title:{display:true,text:'Gross Margin %',font:{size:7}}}}, aspectRatio:1.7 }
   });
 
-  // Stickiness (WAU/MAU default, toggle to DAU/WAU)
-  var stickyPct = st.wauMau.slice();
-  var stickyRest = stickyPct.map(function(v){ return 100-v; });
+  // Stickiness (WAU/MAU default, toggle to DAU/WAU) — absolute numbers + % line
+  var wauAbs = st.mau.map(function(v,i){ return Math.round(v * st.wauMau[i] / 100); });
+  var mauOnly = st.mau.map(function(v,i){ return v - wauAbs[i]; });
   cfiCharts['sticky-'+k] = new Chart(document.getElementById('cfi-sticky-'+k), {
     type:'bar',
     data:{ labels:MONTHS, datasets:[
-      { label:'WAU', data:stickyPct, backgroundColor:a(sku.color,.7), borderRadius:2, stack:'s' },
-      { label:'MAU-only', data:stickyRest, backgroundColor:a('#8B949E',.3), borderRadius:2, stack:'s' },
-      { type:'line', label:'Ratio %', data:stickyPct.slice(), borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y1' }
+      { label:'WAU', data:wauAbs, backgroundColor:a(sku.color,.7), borderRadius:2, stack:'s', yAxisID:'y' },
+      { label:'MAU-only', data:mauOnly, backgroundColor:a('#8B949E',.3), borderRadius:2, stack:'s', yAxisID:'y' },
+      { type:'line', label:'WAU/MAU %', data:st.wauMau.slice(), borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false, yAxisID:'y1' }
     ]},
     options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false},
-      stackedTotal:{display:true, formatter:function(v){return v+'%'}}},
+      stackedTotal:{display:true, formatter:function(v){return Math.round(v)+'K'}}},
       scales:{x:{stacked:true,grid:{display:false}},
-        y:{stacked:true,max:100,ticks:{callback:function(v){return v+'%'},font:{size:7}}},
-        y1:{position:'right',min:0,max:100,grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:7}}}}, aspectRatio:1.7 }
+        y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Users (K)',font:{size:7}}},
+        y1:{position:'right',min:0,max:100,grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:7}},title:{display:true,text:'Ratio %',font:{size:7}}}}, aspectRatio:1.7 }
   });
 
   // Retention Milestones
@@ -821,13 +821,27 @@ window.switchSticky = function(skuKey, mode) {
   var st = stickyData[skuKey];
   var ch = cfiCharts['sticky-'+skuKey];
   if (!ch) return;
-  var pct = mode === 'dau' ? st.dauWau.slice() : st.wauMau.slice();
-  var rest = pct.map(function(v){ return 100 - v; });
-  ch.data.datasets[0].data = pct;
-  ch.data.datasets[0].label = mode === 'dau' ? 'DAU' : 'WAU';
-  ch.data.datasets[1].data = rest;
-  ch.data.datasets[1].label = mode === 'dau' ? 'WAU-only' : 'MAU-only';
-  ch.data.datasets[2].data = pct;
+  var ratePct = mode === 'dau' ? st.dauWau.slice() : st.wauMau.slice();
+  if (mode === 'dau') {
+    // DAU/WAU: WAU as base, DAU as portion
+    var wau = st.mau.map(function(v,i){ return Math.round(v * st.wauMau[i] / 100); });
+    var dau = wau.map(function(v,i){ return Math.round(v * st.dauWau[i] / 100); });
+    var wauOnly = wau.map(function(v,i){ return v - dau[i]; });
+    ch.data.datasets[0].data = dau;
+    ch.data.datasets[0].label = 'DAU';
+    ch.data.datasets[1].data = wauOnly;
+    ch.data.datasets[1].label = 'WAU-only';
+    ch.data.datasets[2].label = 'DAU/WAU %';
+  } else {
+    var wauAbs = st.mau.map(function(v,i){ return Math.round(v * st.wauMau[i] / 100); });
+    var mauOnly = st.mau.map(function(v,i){ return v - wauAbs[i]; });
+    ch.data.datasets[0].data = wauAbs;
+    ch.data.datasets[0].label = 'WAU';
+    ch.data.datasets[1].data = mauOnly;
+    ch.data.datasets[1].label = 'MAU-only';
+    ch.data.datasets[2].label = 'WAU/MAU %';
+  }
+  ch.data.datasets[2].data = ratePct;
   ch.update('none');
   var card = document.getElementById('cfi-sticky-'+skuKey).closest('.card');
   if (card) {
@@ -880,8 +894,18 @@ function rebuildCfiGrowth() {
     ch = cfiCharts['sticky-'+k];
     if (ch) {
       var mode = cfiStickyState[k];
-      var pct = sliceTime(mode === 'dau' ? st.dauWau : st.wauMau);
-      ch.data.labels = labels; ch.data.datasets[0].data = pct; ch.data.datasets[1].data = pct.map(function(v){return 100-v}); ch.data.datasets[2].data = pct.slice(); ch.update('none');
+      var ratePct = sliceTime(mode === 'dau' ? st.dauWau : st.wauMau);
+      var mauSlice = sliceTime(st.mau);
+      var wauSlice = mauSlice.map(function(v,i){ return Math.round(v * sliceTime(st.wauMau)[i] / 100); });
+      if (mode === 'dau') {
+        var dauSlice = wauSlice.map(function(v,i){ return Math.round(v * ratePct[i] / 100); });
+        ch.data.datasets[0].data = dauSlice;
+        ch.data.datasets[1].data = wauSlice.map(function(v,i){ return v - dauSlice[i]; });
+      } else {
+        ch.data.datasets[0].data = wauSlice;
+        ch.data.datasets[1].data = mauSlice.map(function(v,i){ return v - wauSlice[i]; });
+      }
+      ch.data.labels = labels; ch.data.datasets[2].data = ratePct; ch.update('none');
     }
     // Retention milestones
     ch = cfiCharts['retmile-'+k];
