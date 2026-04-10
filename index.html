@@ -1787,7 +1787,7 @@ const GRAY = '#8B949E', EDU_PINK = '#FD71AF';
 const skuColors = { Free:'#8B949E', Edu:EDU_PINK, Pro:BLUE, 'Pro+':PURPLE, Business:TEAL, Enterprise:ORANGE };
 
 // MAU by SKU — monthly stacked bar
-allCharts.mauSku = new Chart(document.getElementById('ch-mau-sku'), {
+allCharts.mauSku = new Chart(document.getElementById('ch-mau-sku') || document.createElement('canvas'), {
   type:'bar',
   data:{ labels:MONTHS, datasets:[
     { label:'Free',       data:[480,510,540,560,580,600,620,640,660,680,700,720], backgroundColor:skuColors.Free, borderRadius:2 },
@@ -1811,7 +1811,7 @@ allCharts.mauSku = new Chart(document.getElementById('ch-mau-sku'), {
 });
 
 // MAU Growth by Month — Activations + Resurrections − Churn + net line
-allCharts.mauGrowth = new Chart(document.getElementById('ch-mau-growth'), {
+allCharts.mauGrowth = new Chart(document.getElementById('ch-mau-growth') || document.createElement('canvas'), {
   type:'bar',
   data:{ labels:MONTHS, datasets:[
     { label:'Activations', data:[85,90,95,92,98,100,105,110,108,115,118,122], backgroundColor:a(GREEN,.7), borderRadius:3, stack:'g' },
@@ -1834,7 +1834,7 @@ var baseActChannelData = {
   'Microsoft & Partners': [6,6,6,6,6,6,6,6,6,6,6,6],
   'Direct / Unknown': [4,4,4,4,4,4,4,4,4,4,4,4]
 };
-allCharts.actChannel = new Chart(document.getElementById('ch-act-channel'), {
+allCharts.actChannel = new Chart(document.getElementById('ch-act-channel') || document.createElement('canvas'), {
   type:'bar',
   data:{ labels:MONTHS, datasets:[
     { label:'Organic Search', data:[22,24,26,25,28,30,32,34,33,36,38,40], backgroundColor:TEAL, borderRadius:2 },
@@ -1853,7 +1853,7 @@ allCharts.actChannel = new Chart(document.getElementById('ch-act-channel'), {
 });
 
 // Activations by SKU — stacked bar
-allCharts.actSku = new Chart(document.getElementById('ch-act-sku'), {
+allCharts.actSku = new Chart(document.getElementById('ch-act-sku') || document.createElement('canvas'), {
   type:'bar',
   data:{ labels:MONTHS, datasets:[
     { label:'Free',       data:[30,32,34,33,36,38,40,42,41,44,46,48], backgroundColor:skuColors.Free, borderRadius:2 },
@@ -1883,7 +1883,7 @@ var planMigNetData = basePlanMigrationData['Individual Upgrades'].map(function(v
 });
 basePlanMigrationData['Net'] = planMigNetData;
 var planMigSkuScale = { Free: 0.15, Edu: 0.02, Pro: 0.25, 'Pro+': 0.10, Business: 0.30, Enterprise: 0.18 };
-allCharts.planMigration = new Chart(document.getElementById('ch-plan-migration'), {
+allCharts.planMigration = new Chart(document.getElementById('ch-plan-migration') || document.createElement('canvas'), {
   type:'bar',
   data:{ labels:MONTHS, datasets:[
     { label:'Individual Upgrades', data:basePlanMigrationData['Individual Upgrades'].slice(),
@@ -1921,7 +1921,7 @@ var upgradeRateNetData = baseUpgradeRatesData['Free → Pro ↑'].map(function(v
 });
 baseUpgradeRatesData['Net Rate'] = upgradeRateNetData;
 var upgradeRateSkuScale = { Free: 0.15, Edu: 0.02, Pro: 0.25, 'Pro+': 0.10, Business: 0.30, Enterprise: 0.18 };
-allCharts.upgradeRates = new Chart(document.getElementById('ch-upgrade-rates'), {
+allCharts.upgradeRates = new Chart(document.getElementById('ch-upgrade-rates') || document.createElement('canvas'), {
   type:'line',
   data:{ labels:MONTHS, datasets:[
     { label:'Free → Pro ↑', data:baseUpgradeRatesData['Free → Pro ↑'].slice(),
@@ -2201,7 +2201,7 @@ var funnelRatesTrend = {
       });
     }
     if (window._funnelRatesChart) window._funnelRatesChart.destroy();
-    window._funnelRatesChart = new Chart(document.getElementById('ch-funnel-rates'), {
+    window._funnelRatesChart = new Chart(document.getElementById('ch-funnel-rates') || document.createElement('canvas'), {
       type: 'line',
       data: { labels: rateLabels, datasets: rateDatasets },
       options: {
@@ -3019,7 +3019,7 @@ var seatUtilSkuScale = { Free: 0.28, Edu: 0.02, Pro: 0.16, 'Pro+': 0.07, Busines
 (function() {
   var utilPct = baseSeatActive.map(function(a,i){ return Math.round(a/(a+baseSeatUnused[i])*1000)/10; });
 
-  allCharts.seatUtil = new Chart(document.getElementById('ch-seat-util'), {
+  allCharts.seatUtil = new Chart(document.getElementById('ch-seat-util') || document.createElement('canvas'), {
     type:'bar',
     data:{ labels:MONTHS, datasets:[
       { label:'Active Seats', data:baseSeatActive.slice(), backgroundColor:a(TEAL,.7), borderRadius:2, stack:'s', yAxisID:'y', datalabels:{display:function(){return !window._hideInternalLabels;}, color:'#fff', font:{size:8,weight:'bold'}, formatter:function(v){return v+'K';}, anchor:'center', align:'center'} },
@@ -3095,18 +3095,18 @@ allCharts.expansion = new Chart(document.getElementById('ch-expansion'), {
     });
     // Activations
     new Chart(document.getElementById('cfi-act-'+sku.key), {
-      type:'bar',
+      type:'line',
       data:{ labels:MONTHS, datasets:[
-        { label:'Activations', data:sku.act.slice(), backgroundColor:a(sku.color,.7), borderRadius:2 }
+        { label:'Activations', data:sku.act.slice(), borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
       ]},
       options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
         scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Activations (K)',font:{size:7}}}}, aspectRatio:1.7 }
     });
     // Resurrections
     new Chart(document.getElementById('cfi-res-'+sku.key), {
-      type:'bar',
+      type:'line',
       data:{ labels:MONTHS, datasets:[
-        { label:'Resurrections', data:sku.res.slice(), backgroundColor:a(sku.color,.5), borderRadius:2 }
+        { label:'Resurrections', data:sku.res.slice(), borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
       ]},
       options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
         scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Resurrections (K)',font:{size:7}}}}, aspectRatio:1.7 }
