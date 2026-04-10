@@ -285,18 +285,46 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
 
 <!-- ── USER GROWTH ── -->
 <section class="section" id="growth">
-  <div class="section-header"><h2>User Growth &amp; Acquisition</h2><p>MAU trends, activations, channel mix, and plan migration</p></div>
+  <div class="section-header"><h2>User Growth</h2><p>MAU trends, activations, resurrections, and retention by plan</p></div>
+
+  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:12px 0 8px;padding-left:10px;border-left:3px solid #7B68EE">Total</h3>
   <div class="grid grid-4">
-    <div class="card"><div class="card-title">Monthly Active Users by SKU <span class="info-icon">i<div class="info-popup"><div class="info-purpose"><strong>Purpose:</strong> Shows total MAU broken out by plan tier over time. Reveals which SKUs drive user growth and mix shift.</div><div class="info-takeaway">📌 Business and Enterprise are the fastest-growing segments, now exceeding 1.2M combined MAU.</div></div></span><span class="illustrative">(Illustrative Data)</span></div><div class="chart-wrap"><canvas id="ch-mau-sku"></canvas></div></div>
-    <div class="card"><div class="card-title">MAU Growth by Month <span class="info-icon">i<div class="info-popup"><div class="info-purpose"><strong>Purpose:</strong> Decomposes monthly MAU change into activations, resurrections, and churn. The net line shows whether growth is accelerating.</div><div class="info-takeaway">📌 Net growth is consistently positive at ~90K/mo. Resurrections contribute ~18% of gross adds — product pull is strong.</div></div></span><span class="illustrative">(Illustrative Data)</span></div><div class="chart-wrap"><canvas id="ch-mau-growth"></canvas></div></div>
-    <div class="card"><div class="card-title"><span>Activations</span> <span class="act-toggles" style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchActView('sku')">by SKU</button><button class="act-toggle" onclick="switchActView('channel')">by Channel</button></span> <span class="info-icon">i<div class="info-popup"><div class="info-purpose"><strong>Purpose:</strong> Toggle between activations by plan tier (SKU) or acquisition channel. Shows where new users come from and what plans they land on.</div><div class="info-takeaway">📌 Free tier drives ~40% of activations. In-Product and Organic Search drive ~65% of channel mix.</div></div></span><span class="illustrative">(Illustrative Data)</span></div><div class="chart-wrap"><canvas id="ch-act-sku" style="display:block"></canvas><canvas id="ch-act-channel" style="display:none"></canvas></div></div>
-    <div class="card"><div class="card-title">Seat Utilization (Active / Assigned) <span class="info-icon">i<div class="info-popup"><div class="info-purpose"><strong>Purpose:</strong> Active vs assigned seats with utilization % on dual axis. Low utilization = enterprise shelfware risk → churn signal.</div><div class="info-takeaway">📌 Utilization at 79% — 21% of assigned seats are unused. Target >85% to reduce churn risk.</div></div></span><span class="illustrative">(Illustrative Data)</span></div><div class="chart-wrap"><canvas id="ch-seat-util"></canvas></div></div>
+    <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-total"></canvas></div></div>
+    <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-total"></canvas></div></div>
+    <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-total"></canvas></div></div>
+    <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-total"></canvas></div></div>
   </div>
-  <div class="grid grid-4" style="margin-top:12px">
-    <div class="card"><div class="card-title">Plan Upgrade / Downgrade Volume <span class="info-icon">i<div class="info-popup"><div class="info-purpose"><strong>Purpose:</strong> Tracks monthly volume of users upgrading between plan tiers (Individual plans and B2B plans) vs downgrades.</div><div class="info-takeaway">📌 Individual upgrades (Free→Pro, Pro→Pro+) are accelerating. B2B downgrades are minimal at &lt;1K/mo — strong enterprise stickiness.</div></div></span><span class="illustrative">(Illustrative Data)</span></div><div class="chart-wrap"><canvas id="ch-plan-migration"></canvas></div></div>
-    <div class="card"><div class="card-title">Upgrade &amp; Downgrade Rates Over Time <span class="info-icon">i<div class="info-popup"><div class="info-purpose"><strong>Purpose:</strong> Monthly conversion rates for upgrades and downgrades across plan tiers. Upward upgrade curves + declining downgrades = healthy plan expansion.</div><div class="info-takeaway">📌 Pro → Pro+ conversion is accelerating (4.5% → 7.5%). Downgrade rates are declining across the board — value proposition is strengthening.</div></div></span><span class="illustrative">(Illustrative Data)</span></div><div class="chart-wrap"><canvas id="ch-upgrade-rates"></canvas></div></div>
-    <div class="card card-compact" id="funnel-viz-card" style="display:flex;flex-direction:column"><div class="card-title">Funnel Visualization</div><div id="funnel-bars-wrap" style="flex:1"></div></div>
-    <div class="card card-compact" id="funnel-rates-card"><div class="card-title">Conversion Funnel: Visit → Activation<span class="info-icon">i<div class="info-popup"><div class="info-purpose"><strong>Purpose:</strong> End-to-end acquisition funnel showing conversion rates at each step from site visit through active usage.</div><div class="info-takeaway">📌 Biggest drop-off is Visit → Signup (4.2% conversion). Trial → Paid conversion at 38% is strong. Focus: improve top-of-funnel signup flow.</div></div></span><span class="illustrative">(Illustrative Data)</span></div><div id="funnel-toggles-wrap"></div><div class="chart-wrap"><canvas id="ch-funnel-rates"></canvas></div></div>
+
+  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:16px 0 8px;padding-left:10px;border-left:3px solid #49CCF9">Pro</h3>
+  <div class="grid grid-4">
+    <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-pro"></canvas></div></div>
+    <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-pro"></canvas></div></div>
+    <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-pro"></canvas></div></div>
+    <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-pro"></canvas></div></div>
+  </div>
+
+  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:16px 0 8px;padding-left:10px;border-left:3px solid #7B68EE">Pro+</h3>
+  <div class="grid grid-4">
+    <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-proplus"></canvas></div></div>
+    <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-proplus"></canvas></div></div>
+    <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-proplus"></canvas></div></div>
+    <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-proplus"></canvas></div></div>
+  </div>
+
+  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:16px 0 8px;padding-left:10px;border-left:3px solid #79D9B9">Max</h3>
+  <div class="grid grid-4">
+    <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-max"></canvas></div></div>
+    <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-max"></canvas></div></div>
+    <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-max"></canvas></div></div>
+    <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-max"></canvas></div></div>
+  </div>
+
+  <h3 style="color:#E6EDF3;font-size:13px;font-weight:600;margin:16px 0 8px;padding-left:10px;border-left:3px solid #FFB08E">Ultra</h3>
+  <div class="grid grid-4">
+    <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mau-ultra"></canvas></div></div>
+    <div class="card"><div class="card-title">Activations <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-act-ultra"></canvas></div></div>
+    <div class="card"><div class="card-title">Resurrections <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-res-ultra"></canvas></div></div>
+    <div class="card"><div class="card-title">Retained Users <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-ret-ultra"></canvas></div></div>
   </div>
 </section>
 
@@ -3038,6 +3066,62 @@ allCharts.expansion = new Chart(document.getElementById('ch-expansion'), {
     annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.2)',borderWidth:1}}}},
     scales:{x:{stacked:true,grid:{display:false}}, y:{stacked:true,ticks:{callback:function(v){return '$'+v+'M'}}, title:{display:true,text:'Monthly Rev Change ($M)',font:{size:9}}}}, aspectRatio:1.7 }
 });
+
+// ══════════════════════════════
+//  CfI USER GROWTH CHARTS
+// ══════════════════════════════
+(function() {
+  var skus = [
+    { key:'total', color:PURPLE, act:[85,90,95,92,98,100,105,110,108,115,118,122], res:[12,14,13,15,16,14,18,17,19,20,18,22], churn:[35,38,36,40,42,39,44,42,46,48,45,50] },
+    { key:'pro', color:BLUE, act:[30,32,34,33,36,38,40,42,41,44,46,48], res:[4,5,4,5,5,5,6,6,6,7,6,7], churn:[12,13,12,14,14,13,15,14,15,16,15,17] },
+    { key:'proplus', color:PURPLE, act:[18,20,22,20,22,22,24,24,23,25,26,26], res:[3,3,3,4,4,3,4,4,5,5,4,5], churn:[8,9,8,10,10,9,10,10,11,11,10,12] },
+    { key:'max', color:TEAL, act:[22,23,24,24,25,25,26,28,28,29,30,31], res:[3,4,4,4,5,4,5,5,5,5,5,7], churn:[10,11,11,11,12,12,13,12,14,14,13,14] },
+    { key:'ultra', color:ORANGE, act:[15,15,15,15,15,15,15,16,16,17,16,17], res:[2,2,2,2,2,2,3,2,3,3,3,3], churn:[5,5,5,5,6,5,6,6,6,7,7,7] }
+  ];
+  skus.forEach(function(sku) {
+    var net = sku.act.map(function(v,i){ return v + sku.res[i] - sku.churn[i]; });
+    var retained = sku.act.map(function(v,i){ return Math.round((sku.act.slice(0,i+1).reduce(function(s,x,j){ return s+x+sku.res[j]-sku.churn[j]; },0))*0.8); });
+    // MAU Growth
+    new Chart(document.getElementById('cfi-mau-'+sku.key), {
+      type:'bar',
+      data:{ labels:MONTHS, datasets:[
+        { label:'Activations', data:sku.act.slice(), backgroundColor:a(GREEN,.7), borderRadius:2, stack:'g' },
+        { label:'Resurrections', data:sku.res.slice(), backgroundColor:a(BLUE,.6), borderRadius:2, stack:'g' },
+        { label:'Churn', data:sku.churn.map(function(v){return -v}), backgroundColor:a(RED,.6), borderRadius:2, stack:'g' },
+        { type:'line', label:'Net Growth', data:net, borderColor:sku.color, borderWidth:2, pointRadius:2, tension:.3, fill:false }
+      ]},
+      options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:6,font:{size:7}}}, datalabels:{display:false}},
+        scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}}}}, aspectRatio:1.7 }
+    });
+    // Activations
+    new Chart(document.getElementById('cfi-act-'+sku.key), {
+      type:'bar',
+      data:{ labels:MONTHS, datasets:[
+        { label:'Activations', data:sku.act.slice(), backgroundColor:a(sku.color,.7), borderRadius:2 }
+      ]},
+      options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
+        scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Activations (K)',font:{size:7}}}}, aspectRatio:1.7 }
+    });
+    // Resurrections
+    new Chart(document.getElementById('cfi-res-'+sku.key), {
+      type:'bar',
+      data:{ labels:MONTHS, datasets:[
+        { label:'Resurrections', data:sku.res.slice(), backgroundColor:a(sku.color,.5), borderRadius:2 }
+      ]},
+      options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
+        scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Resurrections (K)',font:{size:7}}}}, aspectRatio:1.7 }
+    });
+    // Retained Users
+    new Chart(document.getElementById('cfi-ret-'+sku.key), {
+      type:'line',
+      data:{ labels:MONTHS, datasets:[
+        { label:'Retained Users', data:retained, borderColor:sku.color, backgroundColor:a(sku.color,.1), borderWidth:2, pointRadius:2, tension:.3, fill:true }
+      ]},
+      options:{ plugins:{legend:{display:false}, datalabels:{display:false}},
+        scales:{x:{grid:{display:false}}, y:{ticks:{callback:function(v){return v+'K'},font:{size:7}},title:{display:true,text:'Retained (K)',font:{size:7}}}}, aspectRatio:1.7 }
+    });
+  });
+})();
 
 // Sidebar collapse toggle
 window.toggleSidebar = function() {
