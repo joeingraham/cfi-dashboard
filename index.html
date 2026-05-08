@@ -379,6 +379,48 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
 </section>
 
 
+<!-- ── DEFINITIONS ── -->
+<section class="section" id="definitions">
+  <div class="section-header"><h2>Metric Definitions</h2><p>Quick reference for all metrics on this dashboard</p></div>
+  <div class="card span-full" style="font-size:13px;line-height:1.8">
+
+    <div style="margin-bottom:18px">
+      <div class="card-title" style="margin-bottom:6px;font-size:13px;color:#7B68EE">User Growth</div>
+      <div><strong>MAU (Monthly Active Users)</strong> — The total number of unique users who performed at least one qualified action within a calendar month.</div>
+      <div><strong>Activation</strong> — A user who takes their first qualified action on a given plan. Upgrading (e.g., Pro → Pro+) counts as a new activation into the new plan. At the global level, only net-new users to Copilot count — SKU-level upsells are excluded.</div>
+      <div><strong>Resurrection</strong> — A previously churned user who returns to active usage. At the SKU level, downgrading back into a prior plan counts as a resurrection. At the global level, only users who fully churned from all plans and returned count.</div>
+      <div><strong>Churn</strong> — A user who was active in the prior period but performed no qualified action in the current period. Users who moved to another plan are captured in Net Plan Movement instead.</div>
+      <div><strong>Net Plan Movement</strong> — The net flow of users into or out of a plan due to upgrades and downgrades. SKU-level only — sums to zero across all SKUs. <code style="color:#8B949E">= (Upsells In + Downsells In) − (Upsells Out + Downsells Out)</code></div>
+      <div><strong>Net MAU Growth</strong> — Global: <code style="color:#8B949E">Activations + Resurrections − Churn</code>. SKU-level: <code style="color:#8B949E">Activations + Resurrections − Churn + Net Plan Movement</code></div>
+      <div><strong>MAU Composition</strong> — Decomposes MAU into Retained + Activated + Resurrected cohorts. <code style="color:#8B949E">MAU = Retained + Activated + Resurrected</code></div>
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div class="card-title" style="margin-bottom:6px;font-size:13px;color:#7B68EE">Revenue</div>
+      <div><strong>ARR (Annual Recurring Revenue)</strong> — The annualized value of all active recurring revenue. <code style="color:#8B949E">= (Subscription + Overage) × Annualization Factor</code> (monthly × 12, weekly × 52)</div>
+      <div><strong>Subscription Revenue</strong> — Recurring revenue from all paid seats across plan tiers, regardless of whether the user is active.</div>
+      <div><strong>Overage Revenue</strong> — Usage-based revenue generated when users exceed the included allowance in their plan.</div>
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div class="card-title" style="margin-bottom:6px;font-size:13px;color:#7B68EE">Profitability</div>
+      <div><strong>Gross Profit (GP)</strong> — Revenue minus cost of goods sold. <code style="color:#8B949E">GP = Revenue − COGS</code></div>
+      <div><strong>GP by Usage Percentile</strong> — GP segmented by user usage intensity bands, showing which portions of the user base contribute positively or negatively to profitability.</div>
+      <div><strong>Gross Margin %</strong> — <code style="color:#8B949E">GM% = (Revenue − COGS) / Revenue × 100</code></div>
+    </div>
+
+    <div>
+      <div class="card-title" style="margin-bottom:6px;font-size:13px;color:#7B68EE">Engagement &amp; Retention</div>
+      <div><strong>WAU / DAU</strong> — Weekly and Daily Active Users, same as MAU but for shorter time frames.</div>
+      <div><strong>Stickiness (WAU/MAU)</strong> — <code style="color:#8B949E">WAU / MAU × 100</code>. Measures weekly return consistency.</div>
+      <div><strong>Stickiness (DAU/WAU)</strong> — <code style="color:#8B949E">DAU / WAU × 100</code>. Measures daily engagement depth.</div>
+      <div><strong>Retention Milestones</strong> — % of cohort still active at a given horizon (e.g., W1 = 1 week, M6 = 6 months). Global: cohort = all activations, retained on any plan. SKU: cohort = all plan entrants (activation, upsell, or downsell), retained on same plan. <code style="color:#8B949E">= Users active at horizon / Cohort size × 100</code></div>
+    </div>
+
+  </div>
+</section>
+
+
 </main>
 
 <!-- ═══════════ SCRIPT ═══════════ -->
@@ -855,7 +897,7 @@ cfiSkuData.forEach(function(sku) {
       { label:'M12', data:rm.m12.slice(), borderColor:ORANGE, borderWidth:1.5, tension:.3, fill:false, pointRadius:1, borderDash:[4,3] }
     ]},
     options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:true, font:{size:8,weight:'bold'}, color:function(ctx){return ctx.dataset.borderColor;}, formatter:function(v){return v+'%';}, anchor:'end', align:'top'}},
-      scales:{x:{grid:{display:false}}, y:{min:30,max:90,ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'% Retained',font:{size:9}}}}, aspectRatio:1.7 }
+      scales:{x:{grid:{display:false}}, y:{min:30,max:100,ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'% Retained',font:{size:9}}}}, aspectRatio:1.7 }
   });
 });
 
