@@ -241,7 +241,7 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
 <nav class="sidebar" id="sidebar">
   <div style="padding:8px 20px 4px;font-size:9px;font-weight:600;color:#8B949E;text-transform:uppercase;letter-spacing:1px">Plans</div>
   <a class="nav-item active" href="#sku-total" data-section="sku-total">
-    <span class="nav-icon" style="color:#7B68EE;font-size:16px">●</span>
+    <span class="nav-icon" style="color:#FD71AF;font-size:16px">●</span>
     <span class="nav-label">Total</span>
   </a>
   <a class="nav-item" href="#sku-pro" data-section="sku-pro">
@@ -277,7 +277,7 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
 
 <!-- ── TOTAL ── -->
 <section class="section" id="sku-total">
-  <div class="section-header" style="border-left-color:#7B68EE"><h2>Total</h2><p>All plans combined — MAU trends, activations, resurrections, and retention</p></div>
+  <div class="section-header" style="border-left-color:#FD71AF"><h2>Total</h2><p>All plans combined — MAU trends, activations, resurrections, and retention</p></div>
   <div class="grid grid-4">
     <div class="card"><div class="card-title">MAU by SKU <span class="illustrative">(Illustrative)</span></div><div class="chart-wrap"><canvas id="cfi-mausku-total"></canvas></div></div>
     <div class="card"><div class="card-title">MAU Growth <span class="illustrative">(Illustrative)</span><span style="float:right;display:inline-flex;gap:4px"><button class="act-toggle active" onclick="switchCfiMauGrowth('type')">by Type</button><button class="act-toggle" onclick="switchCfiMauGrowth('sku')">by SKU</button></span></div><div class="chart-wrap"><canvas id="cfi-mau-total"></canvas></div></div>
@@ -387,39 +387,130 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
 <!-- ── DEFINITIONS ── -->
 <section class="section" id="definitions">
   <div class="section-header"><h2>Metric Definitions</h2><p>Quick reference for all metrics on this dashboard</p></div>
-  <div class="card span-full" style="font-size:13px;line-height:1.8">
 
-    <div style="margin-bottom:18px">
-      <div class="card-title" style="margin-bottom:6px;font-size:13px;color:#7B68EE">User Growth</div>
-      <div><strong>MAU (Monthly Active Users)</strong> — The total number of unique users who performed at least one qualified action within a calendar month.</div>
-      <div><strong>Activation</strong> — A user who takes their first qualified action on a given plan. Upgrading (e.g., Pro → Pro+) counts as a new activation into the new plan. At the global level, only net-new users to Copilot count — SKU-level upsells are excluded.</div>
-      <div><strong>Resurrection</strong> — A previously churned user who returns to active usage. At the SKU level, downgrading back into a prior plan counts as a resurrection. At the global level, only users who fully churned from all plans and returned count.</div>
-      <div><strong>Churn</strong> — A user who was active in the prior period but performed no qualified action in the current period. Users who moved to another plan are captured in Net Plan Movement instead.</div>
-      <div><strong>Net Plan Movement</strong> — The net flow of users into or out of a plan due to upgrades and downgrades. SKU-level only — sums to zero across all SKUs. <code style="color:#8B949E">= (Upsells In + Downsells In) − (Upsells Out + Downsells Out)</code></div>
-      <div><strong>Net MAU Growth</strong> — Global: <code style="color:#8B949E">Activations + Resurrections − Churn</code>. SKU-level: <code style="color:#8B949E">Activations + Resurrections − Churn + Net Plan Movement</code></div>
-      <div><strong>MAU Composition</strong> — Decomposes MAU into Retained + Activated + Resurrected cohorts. <code style="color:#8B949E">MAU = Retained + Activated + Resurrected</code></div>
+  <div class="grid grid-2">
+
+    <!-- User Growth -->
+    <div class="card">
+      <div class="card-title" style="font-size:13px;color:#7B68EE;margin-bottom:12px;border-bottom:1px solid var(--card-border);padding-bottom:8px">User Growth</div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">MAU (Monthly Active Users)</div>
+        <div style="font-size:12px;color:var(--text-muted)">The total number of unique users who performed at least one qualified action within a calendar month.</div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Activation</div>
+        <div style="font-size:12px;color:var(--text-muted)">A user who takes their first qualified action on a given plan. Upgrading (e.g., Pro → Pro+) counts as a new activation into the new plan.</div>
+        <div style="font-size:11px;margin-top:6px;padding:6px 10px;background:rgba(123,104,238,.08);border-left:3px solid #7B68EE;border-radius:0 4px 4px 0">
+          <span style="color:#49CCF9;font-weight:600">Global:</span> <span style="color:var(--text-muted)">Only net-new users to Copilot — SKU-level upsells excluded</span><br>
+          <span style="color:#49CCF9;font-weight:600">SKU:</span> <span style="color:var(--text-muted)">Includes upsells from lower-tier plans as new activations</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Resurrection</div>
+        <div style="font-size:12px;color:var(--text-muted)">A previously churned user who returns to active usage.</div>
+        <div style="font-size:11px;margin-top:6px;padding:6px 10px;background:rgba(123,104,238,.08);border-left:3px solid #7B68EE;border-radius:0 4px 4px 0">
+          <span style="color:#49CCF9;font-weight:600">Global:</span> <span style="color:var(--text-muted)">Only users who fully churned from all plans and returned</span><br>
+          <span style="color:#49CCF9;font-weight:600">SKU:</span> <span style="color:var(--text-muted)">Downgrading back into a prior plan counts as a resurrection</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Churn</div>
+        <div style="font-size:12px;color:var(--text-muted)">A user who was active in the prior period but performed no qualified action in the current period. Users who moved to another plan are captured in Net Plan Movement instead.</div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Net Plan Movement <span style="font-size:10px;font-weight:400;color:var(--text-muted);background:rgba(255,176,142,.15);padding:2px 6px;border-radius:4px;margin-left:6px">SKU only</span></div>
+        <div style="font-size:12px;color:var(--text-muted)">The net flow of users into or out of a plan due to upgrades and downgrades. Sums to zero across all SKUs.</div>
+        <div style="margin-top:6px;padding:6px 12px;background:rgba(73,204,249,.08);border-radius:6px;font-family:'Consolas',monospace;font-size:12px;color:#49CCF9">= (Upsells In + Downsells In) − (Upsells Out + Downsells Out)</div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Net MAU Growth</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">The net change in the user base for a given period.</div>
+        <div style="font-size:11px;margin-top:4px;padding:6px 10px;background:rgba(123,104,238,.08);border-left:3px solid #7B68EE;border-radius:0 4px 4px 0">
+          <span style="color:#49CCF9;font-weight:600">Global:</span> <code style="color:#79D9B9;font-size:11px">Activations + Resurrections − Churn</code><br>
+          <span style="color:#49CCF9;font-weight:600">SKU:</span> <code style="color:#79D9B9;font-size:11px">Activations + Resurrections − Churn + Net Plan Movement</code>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">MAU Composition</div>
+        <div style="font-size:12px;color:var(--text-muted)">Decomposes MAU into mutually exclusive cohorts.</div>
+        <div style="margin-top:6px;padding:6px 12px;background:rgba(73,204,249,.08);border-radius:6px;font-family:'Consolas',monospace;font-size:12px;color:#49CCF9">MAU = Retained + Activated + Resurrected</div>
+      </div>
     </div>
 
-    <div style="margin-bottom:18px">
-      <div class="card-title" style="margin-bottom:6px;font-size:13px;color:#7B68EE">Revenue</div>
-      <div><strong>ARR (Annual Recurring Revenue)</strong> — The annualized value of all active recurring revenue. <code style="color:#8B949E">= (Subscription + Overage) × Annualization Factor</code> (monthly × 12, weekly × 52)</div>
-      <div><strong>Subscription Revenue</strong> — Recurring revenue from all paid seats across plan tiers, regardless of whether the user is active.</div>
-      <div><strong>Overage Revenue</strong> — Usage-based revenue generated when users exceed the included allowance in their plan.</div>
-    </div>
+    <!-- Revenue + Profitability -->
+    <div class="card">
+      <div class="card-title" style="font-size:13px;color:#7B68EE;margin-bottom:12px;border-bottom:1px solid var(--card-border);padding-bottom:8px">Revenue</div>
 
-    <div style="margin-bottom:18px">
-      <div class="card-title" style="margin-bottom:6px;font-size:13px;color:#7B68EE">Profitability</div>
-      <div><strong>Gross Profit (GP)</strong> — Revenue minus cost of goods sold. <code style="color:#8B949E">GP = Revenue − COGS</code></div>
-      <div><strong>GP by Usage Percentile</strong> — GP segmented by user usage intensity bands, showing which portions of the user base contribute positively or negatively to profitability.</div>
-      <div><strong>Gross Margin %</strong> — <code style="color:#8B949E">GM% = (Revenue − COGS) / Revenue × 100</code></div>
-    </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">ARR (Annual Recurring Revenue)</div>
+        <div style="font-size:12px;color:var(--text-muted)">The annualized value of all active recurring revenue. Monthly revenue × 12 or weekly revenue × 52.</div>
+        <div style="margin-top:6px;padding:6px 12px;background:rgba(73,204,249,.08);border-radius:6px;font-family:'Consolas',monospace;font-size:12px;color:#49CCF9">= (Subscription + Overage) × Annualization Factor</div>
+      </div>
 
-    <div>
-      <div class="card-title" style="margin-bottom:6px;font-size:13px;color:#7B68EE">Engagement &amp; Retention</div>
-      <div><strong>WAU / DAU</strong> — Weekly and Daily Active Users, same as MAU but for shorter time frames.</div>
-      <div><strong>Stickiness (WAU/MAU)</strong> — <code style="color:#8B949E">WAU / MAU × 100</code>. Measures weekly return consistency.</div>
-      <div><strong>Stickiness (DAU/WAU)</strong> — <code style="color:#8B949E">DAU / WAU × 100</code>. Measures daily engagement depth.</div>
-      <div><strong>Retention Milestones</strong> — % of cohort still active at a given horizon (e.g., W1 = 1 week, M6 = 6 months). Global: cohort = all activations, retained on any plan. SKU: cohort = all plan entrants (activation, upsell, or downsell), retained on same plan. <code style="color:#8B949E">= Users active at horizon / Cohort size × 100</code></div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Subscription Revenue</div>
+        <div style="font-size:12px;color:var(--text-muted)">Recurring revenue from all paid seats across plan tiers, regardless of whether the user is active.</div>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Overage Revenue</div>
+        <div style="font-size:12px;color:var(--text-muted)">Usage-based revenue generated when users exceed the included allowance in their plan.</div>
+      </div>
+
+      <div class="card-title" style="font-size:13px;color:#7B68EE;margin-bottom:12px;border-bottom:1px solid var(--card-border);padding-bottom:8px;margin-top:8px">Profitability</div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Gross Profit (GP)</div>
+        <div style="font-size:12px;color:var(--text-muted)">Revenue minus cost of goods sold. Can be positive (profitable) or negative (loss-making).</div>
+        <div style="margin-top:6px;padding:6px 12px;background:rgba(73,204,249,.08);border-radius:6px;font-family:'Consolas',monospace;font-size:12px;color:#49CCF9">GP = Revenue − COGS</div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">GP by Usage Percentile</div>
+        <div style="font-size:12px;color:var(--text-muted)">GP segmented by user usage intensity bands, showing which portions of the user base contribute positively or negatively to profitability.</div>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Gross Margin %</div>
+        <div style="font-size:12px;color:var(--text-muted)">Gross profit as a percentage of revenue.</div>
+        <div style="margin-top:6px;padding:6px 12px;background:rgba(73,204,249,.08);border-radius:6px;font-family:'Consolas',monospace;font-size:12px;color:#49CCF9">GM% = (Revenue − COGS) / Revenue × 100</div>
+      </div>
+
+      <div class="card-title" style="font-size:13px;color:#7B68EE;margin-bottom:12px;border-bottom:1px solid var(--card-border);padding-bottom:8px;margin-top:8px">Engagement &amp; Retention</div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">WAU / DAU</div>
+        <div style="font-size:12px;color:var(--text-muted)">Weekly and Daily Active Users — same as MAU but for shorter time frames.</div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Stickiness (WAU/MAU)</div>
+        <div style="font-size:12px;color:var(--text-muted)">Measures how consistently users return each week.</div>
+        <div style="margin-top:6px;padding:6px 12px;background:rgba(73,204,249,.08);border-radius:6px;font-family:'Consolas',monospace;font-size:12px;color:#49CCF9">WAU / MAU × 100</div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Stickiness (DAU/WAU)</div>
+        <div style="font-size:12px;color:var(--text-muted)">Measures daily engagement depth.</div>
+        <div style="margin-top:6px;padding:6px 12px;background:rgba(73,204,249,.08);border-radius:6px;font-family:'Consolas',monospace;font-size:12px;color:#49CCF9">DAU / WAU × 100</div>
+      </div>
+
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Retention Milestones</div>
+        <div style="font-size:12px;color:var(--text-muted)">% of cohort still active at a given horizon (e.g., W1 = 1 week, M6 = 6 months).</div>
+        <div style="font-size:11px;margin-top:6px;padding:6px 10px;background:rgba(123,104,238,.08);border-left:3px solid #7B68EE;border-radius:0 4px 4px 0">
+          <span style="color:#49CCF9;font-weight:600">Global:</span> <span style="color:var(--text-muted)">Cohort = all activations, retained on any plan</span><br>
+          <span style="color:#49CCF9;font-weight:600">SKU:</span> <span style="color:var(--text-muted)">Cohort = all plan entrants (activation, upsell, or downsell), retained on same plan</span>
+        </div>
+        <div style="margin-top:6px;padding:6px 12px;background:rgba(73,204,249,.08);border-radius:6px;font-family:'Consolas',monospace;font-size:12px;color:#49CCF9">= Users active at horizon / Cohort size × 100</div>
+      </div>
     </div>
 
   </div>
@@ -668,7 +759,7 @@ sections.forEach(s => observer.observe(s));
 var cfiCharts = {};
 function fmtKM(v) { v = Math.abs(Math.round(v)); return v >= 1000 ? (v/1000).toFixed(1)+'M' : v+'K'; }
 var cfiSkuData= [
-  { key:'total', color:PURPLE, act:[85,90,95,92,98,100,105,110,108,115,118,122], res:[12,14,13,15,16,14,18,17,19,20,18,22], churn:[35,38,36,40,42,39,44,42,46,48,45,50] },
+  { key:'total', color:PINK, act:[85,90,95,92,98,100,105,110,108,115,118,122], res:[12,14,13,15,16,14,18,17,19,20,18,22], churn:[35,38,36,40,42,39,44,42,46,48,45,50] },
   { key:'pro', color:BLUE, act:[30,32,34,33,36,38,40,42,41,44,46,48], res:[4,5,4,5,5,5,6,6,6,7,6,7], churn:[12,13,12,14,14,13,15,14,15,16,15,17] },
   { key:'proplus', color:PURPLE, act:[18,20,22,20,22,22,24,24,23,25,26,26], res:[3,3,3,4,4,3,4,4,5,5,4,5], churn:[8,9,8,10,10,9,10,10,11,11,10,12] },
   { key:'max', color:TEAL, act:[22,23,24,24,25,25,26,28,28,29,30,31], res:[3,4,4,4,5,4,5,5,5,5,5,7], churn:[10,11,11,11,12,12,13,12,14,14,13,14] },
