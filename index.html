@@ -264,6 +264,10 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: v
     <span class="nav-icon"><svg viewBox="0 0 16 16"><path d="M5.433.868l1.49 3.02 3.333.485-2.411 2.35.57 3.318L5.432 8.49l-2.982 1.568.569-3.318L.608 4.39l3.334-.486L5.433.868zM11 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-3 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/></svg></span>
     <span class="nav-label">Experiments</span>
   </a>
+  <a class="nav-item" href="#definitions" data-section="definitions">
+    <span class="nav-icon"><svg viewBox="0 0 16 16"><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h11A1.5 1.5 0 0 1 15 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11zM3 4v1h10V4H3zm0 3v1h10V7H3zm0 3v1h7v-1H3z"/></svg></span>
+    <span class="nav-label">Definitions</span>
+  </a>
 </nav>
 <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()" title="Collapse sidebar">‹</button>
 
@@ -881,6 +885,7 @@ cfiSkuData.forEach(function(sku) {
     ]},
     options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:false},
       stackedTotal:{display:true, formatter:function(v){return fmtKM(v)}}},
+      layout:{padding:{top:12}},
       scales:{x:{stacked:true,grid:{display:false}},
         y:{stacked:true,ticks:{callback:function(v){return v+'K'},font:{size:9}},title:{display:true,text:'Users (K)',font:{size:9}}},
         y1:{position:'right',min:0,max:100,grid:{display:false},ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'Ratio %',font:{size:9}}}}, aspectRatio:1.7 }
@@ -897,6 +902,7 @@ cfiSkuData.forEach(function(sku) {
       { label:'M12', data:rm.m12.slice(), borderColor:ORANGE, borderWidth:1.5, tension:.3, fill:false, pointRadius:1, borderDash:[4,3] }
     ]},
     options:{ plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}, datalabels:{display:true, font:{size:8,weight:'bold'}, color:function(ctx){return ctx.dataset.borderColor;}, formatter:function(v){return v+'%';}, anchor:'end', align:'top'}},
+      layout:{padding:{top:16}},
       scales:{x:{grid:{display:false}}, y:{min:30,max:100,ticks:{callback:function(v){return v+'%'},font:{size:9}},title:{display:true,text:'% Retained',font:{size:9}}}}, aspectRatio:1.7 }
   });
 });
